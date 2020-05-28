@@ -1,0 +1,31 @@
+<!-- Page Sidebar -->
+<div class="page-sidebar" id="sidebar">
+    <!-- Sidebar Menu -->
+    <ul class="nav sidebar-menu">
+        
+        <!--UI Elements-->
+        <li {eq name="menu" value="category"}class="open"{/eq}>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-desktop"></i>
+                <span class="menu-text"> 商品类别 </span>
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li {eq name="submenu" value="add"}class="active"{/eq}>
+                    <a href="{:url('add')}">
+                        <span class="menu-text">添加</span>
+                    </a>
+                </li>
+                <li {eq name="submenu" value="list"}class="active"{/eq}>
+                    <a href="{:url('list')}" class="menu-dropdown">
+                        <span class="menu-text">列表</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        
+    </ul>
+    <!-- /Sidebar Menu -->
+</div>
+<!-- /Page Sidebar -->
