@@ -147,6 +147,7 @@ return [
         '__admin__' => '/shop/public/static/assets',
         '__root__' => '/shop/public/static/style',
         '__SliderCaptcha__' => '/shop/extend/SliderCaptcha',
+        '__public__' => '/shop/public/'
     ],
     // 默认跳转页面对应的模板文件
     'dispatch_success_tmpl'  => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',

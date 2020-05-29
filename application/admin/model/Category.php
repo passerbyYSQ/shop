@@ -9,6 +9,11 @@ use think\Db;
  */
 class Category extends Model {
     
+    // 拿到所有分类（不需要分页）
+    public function getAll() {
+        return db('category')->select();
+    }
+    
     public function list($conds, $count = 1, $parms) { // 每页显示的条数  
         //var_dump($parms);exit();
         return db('category')

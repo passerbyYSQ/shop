@@ -7,7 +7,7 @@
         <li {eq name="menu" value="category"}class="open"{/eq}>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon fa fa-desktop"></i>
-                <span class="menu-text"> 商品类别 </span>
+                <span class="menu-text"> 分类管理 </span>
                 <i class="menu-expand"></i>
             </a>
 
@@ -18,6 +18,26 @@
                     </a>
                 </li>
                 <li {eq name="submenu" value="list"}class="active"{/eq}>
+                    <a href="{:url('list')}" class="menu-dropdown">
+                        <span class="menu-text">列表</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        
+        <li class="open">
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-desktop"></i>
+                <span class="menu-text"> 商品管理 </span>
+                <i class="menu-expand"></i>
+            </a>
+            <ul class="submenu">
+                <li>
+                    <a href="{:url('goods/add')}">
+                        <span class="menu-text">添加</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{:url('list')}" class="menu-dropdown">
                         <span class="menu-text">列表</span>
                     </a>
