@@ -13,32 +13,32 @@
 
             <ul class="submenu">
                 <li {eq name="submenu" value="add"}class="active"{/eq}>
-                    <a href="{:url('add')}">
+                    <a href="{:url('category/add')}">
                         <span class="menu-text">添加</span>
                     </a>
                 </li>
                 <li {eq name="submenu" value="list"}class="active"{/eq}>
-                    <a href="{:url('list')}" class="menu-dropdown">
+                    <a href="{:url('category/list')}" class="menu-dropdown">
                         <span class="menu-text">列表</span>
                     </a>
                 </li>
             </ul>
         </li>
         
-        <li class="open">
+        <li {eq name="menu" value="goods"}class="open"{/eq}>
             <a href="#" class="menu-dropdown">
                 <i class="menu-icon fa fa-desktop"></i>
                 <span class="menu-text"> 商品管理 </span>
                 <i class="menu-expand"></i>
             </a>
             <ul class="submenu">
-                <li>
+                <li {eq name="submenu" value="add"}class="active"{/eq}>
                     <a href="{:url('goods/add')}">
                         <span class="menu-text">添加</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{:url('list')}" class="menu-dropdown">
+                <li {eq name="submenu" value="list"}class="active"{/eq}>
+                    <a href="{:url('goods/list')}" class="menu-dropdown">
                         <span class="menu-text">列表</span>
                     </a>
                 </li>

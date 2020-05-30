@@ -50,8 +50,7 @@ class Category extends Model {
         return db('category')
                     ->delete($id);
     }
-    
-    
+
     public function updateById($cate, $id) { 
         return db('category')
                     ->where('id', $id)
