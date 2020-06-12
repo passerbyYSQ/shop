@@ -6,6 +6,18 @@ use app\index\model\Goods as GoodsModel;
 
 class Goods extends Controller
 {
+    public function index() {
+        $goodsId = input('get.id');
+        $goodsModel = new GoodsModel();
+        $goods = $goodsModel->findById($goodsId);
+        if (empty($goods)) {
+            $this->error('商品不存在');
+        } 
+        
+        $this->assign('goods', $goods);
+        return $this->fetch('goods');
+    }
+    
     public function list() {
         // 获取所有分类
         $cateModel = new CategoryModel();        

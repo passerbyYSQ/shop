@@ -9,6 +9,16 @@ use think\db\Query;
 
 class Goods extends Model {
     
+    // 商品详情页
+    public function findById($id) {
+        return db('goods')
+                    ->alias('g')
+                    ->join('category c', 'g.cateId=c.id')
+                    ->field('g.*, c.cateName')
+                    ->where('g.id', $id)
+                    ->find();
+    }
+    
     public function listPage($conds, $count = 12) {
         // 组织Query对象。并将【不为空的条件】，存到$parms数组，用于拼接到url后面和回显数据
         // 最好不要直接拼接sql，而是采用tp5封装的Query对象
