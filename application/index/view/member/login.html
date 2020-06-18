@@ -17,8 +17,7 @@
 <link rel="stylesheet" type="text/css" href="__index__/css/style.css" />
 <link rel="stylesheet" type="text/css" href="__index__/css/iconfont.css" />
 <link rel="stylesheet" type="text/css" href="__index__/css/purebox.css" />
-<link rel="stylesheet" type="text/css"
-	href="__index__/css/quickLinks.css" />
+<link rel="stylesheet" type="text/css" href="__index__/css/quickLinks.css" />
 
 <script type="text/javascript" src="__index__/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="__index__/js/jquery.json.js"></script>
@@ -130,17 +129,17 @@
 								<span></span>
 							</div>
 							<div class="msg-wrap">
-								<div class="msg-error" style="display: none">账户名与密码不匹配，请重新输入</div>
+								<div class="msg-error"></div>
 							</div>
 							<div class="form">
-								<form name="formLogin" action="user.php" method="post"
-									onSubmit="userLogin();return false;">
+								<form name="formLogin" action="{:url('member/login')}" method="post">
 									<div class="item">
 										<div class="item-info">
 											<i class="iconfont icon-name"></i> <input type="text"
 												id="username" name="username" class="text" value=""
 												placeholder="手机" autocomplete="off" />
 										</div>
+										<div class="msg"></div>
 									</div>
 									<div class="item">
 										<div class="item-info">
@@ -148,16 +147,18 @@
 												style="display: none" /> <input type="password"
 												id="nloginpwd" name="password" class="text" value=""
 												placeholder="密码" autocomplete="off" />
+												
 										</div>
+										<div class="msg"></div>
 									</div>
 									<div class="item">
 										<div class="item-info">
 											<i class="iconfont icon-password"></i><input type="text" name="captcha" id="captcha" class="text"
 												value="" autocomplete="off" placeholder="验证码"/> <img
-												style="position: absolute; top: 0px; right: 0px;"
+												style="position: absolute; top: 0px; right: 0px;" id="captchaImg"
 												src="{:captcha_src()}" onClick="this.src='{:captcha_src()}'" />
 										</div>
-										<div class="input-tip"></div>
+										<div class="msg"></div>
 									</div>
 
 									<div class="item item-button">
@@ -182,9 +183,6 @@
 			</div>
 		</div>
 	</div>
-
-
-
 
 	<div class="footer user-footer">
 		<div class="dsc-copyright">
@@ -227,9 +225,7 @@
 				type="hidden" name="user_id" value="0" />
 		</div>
 	</div>
-
-	<script type="text/javascript" src="__index__/js/user.js"></script>
-	<script type="text/javascript" src="__index__/js/user_register.js"></script>
+	
 	<script type="text/javascript" src="__index__/js/utils.js"></script>
 	<script type="text/javascript"
 		src="__index__/js/jquery.SuperSlide.2.1.1.js"></script>
@@ -239,8 +235,81 @@
 		src="__index__/js/jquery.validation.min.js"></script>
 	<script type="text/javascript" src="__index__/js/jquery.purebox.js"></script>
 	<script type="text/javascript">
+
+	
+		$(function() {
+			
+			$("form[name='formLogin']").validate({
+				// 验证通过后的回调
+				submitHandler:function(form){
+		            form.submit();
+		        },
+				// 修改错误信息的显示位置
+				
+				errorPlacement:function(error, element){ // 错误信息，input表单项
+					var error_div = element.parents('div.item').find('div.msg');
+					error_div.html("").append(error);
+				},
+				
+				ignore:".ignore",
+				rules:{
+					username :{
+						required : true,
+						isMobile : true  // 自定义的验证规则
+					},
+					password :{
+						required : true
+					},
+					captcha:{
+						required : true,
+						remote : {
+							cache: false,
+							async: true,
+							type: 'POST',
+							url: "{:url('member/checkCaptcha')}",
+							data:{ // 提交给服务端的数据（键值对）
+								captcha:function(){
+									return $("input[name='captcha']").val();
+								}
+							},
+							// 远程地址只能输出"true"或"false"，不能有其它输出。
+							dataFilter:function(data, type){ 
+								if(data == "false"){
+									// 制造点击事件，使验证码刷新。
+									$("input[name='captcha']").siblings().click();
+								}
+								return data;
+							}							
+						}
+					}
+				},
+				messages:{
+					username:{
+						required : "手机号不能为空",
+						isMobile : "手机号格式错误"
+					},
+					password:{
+						required : "密码不能为空"
+					},
+					captcha: {
+						required : "验证码不能为空",
+						remote : "验证码错误，已刷新"
+					}
+				},
+				onkeyup: function(element,event){
+					var name = $(element).attr("name");
+					if(name == "captcha"){
+						//不可去除，当是验证码输入必须失去焦点才可以验证（错误刷新验证码）
+						return true;
+					}
+				}
+			});
+		});
 		
 	</script>
+	
+		
+	
 </body>
 </html>
 

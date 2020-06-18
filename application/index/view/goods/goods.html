@@ -110,12 +110,14 @@
 									<div class="si-warp">
 										<div class="amount-warp">
 											<input class="text buy-num" ectype="quantity" value="1"
+											onkeyup="this.value=this.value.replace(/[^\d]/g,'')" onafterpaste="this.value=this.value.replace(/[^\d]/g,'')"
 												name="number" defaultnumber="1">
 											<div class="a-btn">
-												<a href="javascript:void(0);" class="btn-add"
-													ectype="btnAdd"><i class="iconfont icon-up"></i></a> <a
-													href="javascript:void(0);" class="btn-reduce btn-disabled"
-													ectype="btnReduce"><i class="iconfont icon-down"></i></a> <input
+												<a href="javascript:addCount(1);" class="btn-add" ectype="btnAdd">
+													<i class="iconfont icon-up"></i></a> 
+												<a href="javascript:addCount(-1);" class="btn-reduce"
+													ectype="btnReduce"><i class="iconfont icon-down"></i></a> 
+												<input
 													type="hidden" name="perNumber" id="perNumber"
 													ectype="perNumber" value="0"> <input type="hidden"
 													name="perMinNumber" id="perMinNumber" ectype="perMinNumber"
@@ -132,9 +134,9 @@
 								<div class="clear"></div>
 							</div>
 							<div class="choose-btns ml60 clearfix">
-								<a href="javascript:bool=0;addToCart(799)" data-type="0"
-									class="btn-buynow" ectype="btn-buynow">立即购买</a> <a
-									href="javascript:bool=0;addToCartShowDiv(799)"
+								<a href="#" data-type="0"
+									class="btn-buynow" ectype="btn-buynow">立即购买</a> 
+								<a href="javascript:addToCart({$Think.get.id});"
 									class="btn-append" ectype="btn-append"><i
 									class="iconfont icon-carts"></i>加入购物车</a>
 
@@ -616,7 +618,6 @@
 							href="article.php?id=5" rel="nofollow">公司简介</a> <span
 							class="spacer"></span> <a href="message.php" rel="nofollow">意见反馈</a>
 
-
 					</p>
 
 					<p>
@@ -646,21 +647,67 @@
 			</div>
 		</div>
 
+		<!--  
 		<script type="text/javascript" src="__index__/js/utils.js"></script>
 
-		<script type="text/javascript"
-			src="__index__/js/jquery.SuperSlide.2.1.1.js"></script>
+		<script type="text/javascript" src="__index__/js/jquery.SuperSlide.2.1.1.js"></script>
 		<script type="text/javascript" src="__index__/js/jquery.yomi.js"></script>
 		<script type="text/javascript" src="__index__/js/cart_common.js"></script>
 		<script type="text/javascript" src="__index__/js/magiczoomplus.js"></script>
 		<script type="text/javascript" src="__index__/js/cart_quick_links.js"></script>
-		<script type="text/javascript"
-			src="__index__/js/perfect-scrollbar.min.js"></script>
+		<script type="text/javascript" src="__index__/js/perfect-scrollbar.min.js"></script>
 
 		<script type="text/javascript" src="__index__/js/jquery.purebox.js"></script>
 		<script type="text/javascript" src="__index__/js/goodsFittings.js"></script>
-
+		-->
 		<script type="text/javascript">
+		
+			function addToCart(goodsId) {
+				// 将商品添加到购物车
+				//console.log("debug");
+				// 做一个判断
+				var count = $(".buy-num").val()
+				var max = {$goods.count};
+				
+				console.log(count);
+				if (parseInt(count) > max) {
+					$(".buy-num").val(max)
+					//console.log(1);
+				} else if (count == 0) {
+					$(".buy-num").val(1);
+					//console.log(2);
+				} else {
+					//console.log(3);
+					$.ajax({
+						type: "post",
+						url: "{:url('cart/add')}",
+						data: {
+							goodsId: goodsId,
+							count : count
+						},
+						success: function(res) {
+							//console.log(res);
+							if (res.status) {
+								alert('加入购物车成功');
+							} else {
+								alert('加入购物车失败' + res.msg);
+							}
+							
+						}
+					});
+				}
+			}
+			
+			function addCount(num) {
+				//console.log(num);
+				var max = {$goods.count}; // 库存
+				var cur = parseInt($(".buy-num").val());
+				if (num > 0) {
+					$(".buy-num").val(cur+num > max ? max : (cur+num));
+				} else {
+					$(".buy-num").val(cur+num < 1 ? 1 : (cur+num));
+				}
+			}
 			
 		</script>
 </body>

@@ -13,11 +13,12 @@
 	href="__index__/css/quickLinks.css" />
 <link rel="stylesheet" type="text/css" href="__index__/css/suggest.css" />
 <link rel="stylesheet" type="text/css" href="__index__/css/select.css" />
-<link rel="stylesheet" type="text/css"
-	href="__index__/css/perfect-scrollbar.min.css" />
+<link rel="stylesheet" type="text/css" href="__index__/css/perfect-scrollbar.min.css" />
 <script type="text/javascript" src="__index__/js/jquery-1.9.1.min.js"></script>
+<!--  
 <script type="text/javascript" src="__index__/js/jquery.json.js"></script>
 <script type="text/javascript" src="__index__/js/transport_jquery.js"></script>
+-->
 <script type="text/javascript">
 	//加载效果
 	var load_cart_info = '<img src="__index__/img/load/loadGoods.gif" height="108" class="ml100">';
@@ -148,9 +149,9 @@
 										</div>
 										<div class="p-operate" style="display: flex;">
 											<a href="#" class="choose-btn-coll" style="flex: 1;"><i
-												class="iconfont icon-zan-alt"></i>收藏</a> <a href="#"
+												class="iconfont icon-zan-alt"></i>收藏</a> 
+											<a href="javascript:void(0);" onClick="addToCart({$goods.id})"
 												style="flex: 1;"
-												onClick="javascript:addToCart(801,0,event,this,'flyItem');"
 												rev="__index__/img/0_thumb_G_1490174925807.jpg"
 												data-dialog="addCart_dialog" data-divid="addCartLog"
 												data-title="请选择属性" class="addcart"> <i
@@ -187,13 +188,13 @@
 
 				{include file="common/footer" /}
 
+				<!-- 
 				<script type="text/javascript" src="__index__/js/utils.js"></script>
-				<!--  
-				<script type="text/javascript" src="__index__/js/jquery.SuperSlide.2.1.1.js"></script>
-					-->
 
+				<script type="text/javascript" src="__index__/js/jquery.SuperSlide.2.1.1.js"></script>
 				<script type="text/javascript" src="__index__/js/common.js"></script>
 				<script type="text/javascript" src="__index__/js/cart_common.js"></script>
+				
 				<script type="text/javascript" src="__index__/js/parabola.js"></script>
 				<script type="text/javascript" src="__index__/js/shopping_flow.js"></script>
 				<script type="text/javascript"
@@ -203,7 +204,30 @@
 
 				<script type="text/javascript" src="__index__/js/jquery.purebox.js"></script>
 				
+				-->
 				<script type="text/javascript">
+					// 将商品添加到购物车
+					function addToCart(goodsId) {
+						//console.log("debug");
+						
+						$.ajax({
+							type: "post",
+							url: "{:url('cart/add')}",
+							data: {
+								goodsId: goodsId,
+								count : 1
+							},
+							success: function(res) {
+								//console.log(res);
+								if (res.status) {
+									alert('加入购物车成功');
+								} else {
+									alert('加入购物车失败' + res.msg);
+								}
+								
+							}
+						});
+					}
 					
 					// 添加分类
 					function addCategory(cateInput) { // 绝对不能写成this

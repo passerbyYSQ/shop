@@ -2,8 +2,16 @@
 	<div class="w w1390">
 		<div class="fl">
 			<div class="txt-info" id="ECS_MEMBERZONE">
-				<a href="#" class="link-login red">请登录</a> <a href="#"
-					class="link-regist">免费注册</a>
+				{empty name="$Think.session.member"}
+					<a href="{:url('member/login')}" class="link-login red">请登录</a> 
+					<a href="{:url('member/register')}" class="link-regist">免费注册</a>
+				{else/}
+					<a href="{:url('member/login')}" class="link-login red">
+						{$Think.session.member.phone} | {$Think.session.member.memberName}
+					</a> 
+					<a href="{:url('member/logout')}" class="link-regist" 
+					onClick="return confirm('是否确认退出当前账号？');">退出</a>
+				{/empty}
 			</div>
 		</div>
 		<ul class="quick-menu fr">

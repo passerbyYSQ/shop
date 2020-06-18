@@ -47,36 +47,40 @@ class Member extends Controller {
     }
     
     public function login() {
+        //var_dump(session('member'));exit();
+        
         if (request()->isPost()) {
-            $res['status'] = 1;
-            
-            // ajax 
-            $captcha = input('post.captcha');
-            $phone = input('post.phone');
-            $password = input('post.passowrd');
-            
-            if (!captcha_check($captcha)) {
-                $res['status'] = 0;
-                $res['msg'] = '验证码错误'; 
-            }
+            $phone = input('post.username');
+            $password = input('post.password');
             
             $model = new MemberModel();
             $member = $model->findByCond('phone', $phone);
+           
             if (empty($member)) {
-                $res['status'] = -1;
-                $res['msg'] = '手机号尚未注册';
+                // 之所以要重定向，是为了刷新验证码
+                $this->error('手机号尚未注册', 'member/login');
+            } else{
+                if ($member['password'] != md5($password)) {
+                    $this->error('密码错误', 'member/login');
+                } else {
+                    unset($member['password']);
+                    session('member', $member);
+                    //var_dump(session('member'));exit();
+                    $this->success('登录成功', 'goods/list');
+                }
             }
-            
-            if (md5($password) != $member['password']) {
-                $res['status'] = -2;
-                $res['msg'] = '密码错误';
-            }
-            
-            return json($res);
         } else {
             return view();
         }
-        
+    }
+    
+    public function logout() { 
+        session('member', null);
+        $this->success('退出成功');
+    }
+    
+    public function test() {
+        var_dump(md5('123456'));
     }
     
 }
