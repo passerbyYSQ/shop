@@ -1,0 +1,545 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="童攀课堂-php课堂-www.tongpankt.com" />
+<meta name="Description" content="童攀课堂-php课堂-www.tongpankt.com" />
+<title>交流群：383432579</title>
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="stylesheet" type="text/css" href="__index__/css/base.css" />
+<link rel="stylesheet" type="text/css" href="__index__/css/style.css" />
+<link rel="stylesheet" type="text/css" href="__index__/css/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="__index__/css/purebox.css" />
+<link rel="stylesheet" type="text/css" href="__index__/css/quickLinks.css" />
+
+<script type="text/javascript" src="__index__/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="__index__/js/jquery.json.js"></script>
+<script type="text/javascript" src="__index__/js/transport_jquery.js"></script>
+<script type="text/javascript">
+//加载效果
+var load_cart_info = '<img src="__index__/img/loadGoods.gif" height="108" class="ml100">';
+var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
+</script>
+<link rel="stylesheet" type="text/css" href="__index__/css/perfect-scrollbar.min.css" />
+</head>
+
+<body class="bg-ligtGary">
+	<div class="site-nav" id="site-nav">
+		<div class="w w1200">
+			<div class="fl">
+				<div class="txt-info" id="ECS_MEMBERZONE">
+
+					<a href="#" class="link-login red">请登录</a> <a href="#"
+						class="link-regist">免费注册</a>
+
+				</div>
+			</div>
+			<ul class="quick-menu fr">
+				<li>
+					<div class="dt">
+						<a href="#">我的订单</a>
+					</div>
+				</li>
+				<li class="spacer"></li>
+				<li>
+					<div class="dt">
+						<a href="#">我的浏览</a>
+					</div>
+				</li>
+				<li class="spacer"></li>
+				<li>
+					<div class="dt">
+						<a href="#">我的收藏</a>
+					</div>
+				</li>
+				<li class="spacer"></li>
+				<li>
+					<div class="dt">
+						<a href="#">客户服务</a>
+					</div>
+				</li>
+				<li class="spacer"></li>
+			</ul>
+		</div>
+	</div>
+	<div class="header header-cart">
+		<div class="w w1200">
+			<div class="logo">
+				<div class="logoImg">
+					<a href="#"><img src="__index__/img/logo.png" /></a>
+				</div>
+				<div class="tit">
+					购物车（共有 <em ectype="cartNum">2</em> 件商品）
+				</div>
+			</div>
+			<div class="dsc-search">
+				<div class="form">
+					<form id="searchForm" name="searchForm" method="get"
+						action="search.php" onSubmit="return checkSearchForm()"
+						class="search-form">
+						<input autocomplete="off" onKeyUp="lookup(this.value);"
+							name="keywords" type="text" id="keyword" value="内衣"
+							class="search-text" /> <input type="hidden"
+							name="store_search_cmt" value="0">
+						<input type="submit" value="搜商品" class="button button-icon" />	
+					</form>
+
+					<div class="suggestions_box" id="suggestions"
+						style="display: none;">
+						<div class="suggestions_list" id="auto_suggestions_list">
+							&nbsp;</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="w w1200">
+
+			<div class="cart-warp">
+				<div class="cart-filter">
+					<div class="cart-stepflex">
+						<div class="cart-step-item curr">
+							<span>1.我的购物车</span> <i class="iconfont icon-arrow-right-alt"></i>
+						</div>
+						<div class="cart-step-item">
+							<span>2.填写订单信息</span> <i class="iconfont icon-arrow-right-alt"></i>
+						</div>
+						<div class="cart-step-item">
+							<span>3.成功提交订单</span>
+						</div>
+					</div>
+					
+				</div>
+				<div class="cart-table">
+					<div class="cart-head">
+						<div class="column c-checkbox">
+							<div class="cart-checkbox cart-all-checkbox" ectype="ckList">
+								<input type="checkbox" id="cart-selectall" checked onChange="checkAll()"
+									class="ui-checkbox checkboxshopAll" ectype="ckAll" /> <label
+									for="cart-selectall" class="ui-label-14">全选</label>
+							</div>
+						</div>
+						<div class="column c-goods">商品</div>
+						<div class="column c-props">&nbsp;</div>
+						<div class="column c-price">单价（元）</div>
+						<div class="column c-quantity">数量</div>
+						<div class="column c-sum">小计</div>
+						<div class="column c-action">操作</div>
+					</div>
+					<div class="cart-tbody" ectype="cartTboy">
+						<!-- 商品 -->
+						<div class="cart-item" ectype="shopItem">
+
+							<div class="item-list" ectype="itemList">
+								<!-- 商品1 开始 -->
+								<div class="item-single">
+									<div class="item-item selected" ectype="item" id="product_775"
+										data-goodsid="775">
+										<div class="item-form">
+											<div class="cell s-checkbox">
+												<div class="cart-checkbox" ectype="ckList">
+													<input type="checkbox" id="checkItem_8" value="8" onChange="checkOne(this)"
+														name="checkItem" class="ui-checkbox" ectype="ckGoods">
+													<label for="checkItem_8" class="ui-label-14">&nbsp;</label>
+												</div>
+											</div>
+											<div class="cell s-goods">
+												<div class="goods-item">
+													<div class="p-img">
+														<a href="#" target="_blank"><img
+															src="__index__/img/0_thumb_G_1490169281436.jpg" width="70"
+															height="70"></a>
+													</div>
+													<div class="item-msg">
+														<a href="#" target="_blank">韩都衣舍2017韩版女装春装新款条纹显瘦百搭宽松v领七分袖衬衫潮
+															领券立减/单件包邮/七天无理由退换</a>
+														<div class="gds-types"></div>
+													</div>
+												</div>
+											</div>
+											<div class="cell s-props">
+												&nbsp;
+											</div>
+											<div class="cell s-price">
+												<strong id="goods_price_8"><em>¥</em><span name="price">60.00</span></strong>
+											</div>
+											<div class="cell s-quantity">
+												<div class="amount-warp">
+													<input type="text" value="1" name="goodsNum" 
+														onchange="change_goods_number(8, this.value, 2, 16)"
+														class="text buy-num" ectype="number" defaultnumber="1">
+													<div class="a-btn">
+														<a href="#" onclick="addNum(this, 1)"
+															class="btn-add"><i class="iconfont icon-up"></i></a> <a
+															href="#" onclick="addNum(this, -1)"
+															class="btn-reduce"><i
+															class="iconfont icon-down"></i></a>
+													</div>
+												</div>
+												<div class="tc ftx-03">有货</div>
+											</div>
+											<div class="cell s-sum">
+												<strong id="goods_subtotal_8"><font
+													id="_8_subtotal"><em>¥</em><span name="subtotal">60.00</span></font></strong>
+											</div>
+											<div class="cell s-action">
+												<a href="#" id="remove_8" ectype="cartOperation"
+													data-value="{&quot;divId&quot;:&quot;cart_remove&quot;,&quot;url&quot;:&quot;flow.php?step=drop_goods&amp;id=8&quot;,&quot;cancelUrl&quot;:&quot;flow.php?step=drop_to_collect&amp;id=8&quot;,&quot;recid&quot;:8,&quot;title&quot;:&quot;删除&quot;}"
+													class="cart-remove">删除</a> <a href="#" id="store_8"
+													ectype="cartOperation"
+													data-value="{&quot;divId&quot;:&quot;cart_collect&quot;,&quot;url&quot;:&quot;flow.php?step=drop_to_collect&amp;id=8&quot;,&quot;recid&quot;:8,&quot;title&quot;:&quot;关注&quot;}"
+													class="cart-store">收藏</a>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- 商品1 结束 -->
+
+								<!-- 商品2 结束 -->
+								<div class="item-single">
+									<div class="item-item selected" ectype="item" id="product_775"
+										data-goodsid="775">
+										<div class="item-form">
+											<div class="cell s-checkbox">
+												<div class="cart-checkbox" ectype="ckList">
+													<input type="checkbox" id="checkItem_9" value="9"  onChange="checkOne(this)"
+														name="checkItem" class="ui-checkbox" ectype="ckGoods">
+													<label for="checkItem_9" class="ui-label-14">&nbsp;</label>
+												</div>
+											</div>
+											<div class="cell s-goods">
+												<div class="goods-item">
+													<div class="p-img">
+														<a href="#" target="_blank"><img
+															src="__index__/img/0_thumb_G_1490169281436.jpg" width="70"
+															height="70"></a>
+													</div>
+													<div class="item-msg">
+														<a href="#" target="_blank">韩都衣舍2017韩版女装春装新款条纹显瘦百搭宽松v领七分袖衬衫潮
+															领券立减/单件包邮/七天无理由退换</a>
+														<div class="gds-types"></div>
+													</div>
+												</div>
+											</div>
+											<div class="cell s-props">&nbsp;</div>
+											<div class="cell s-price">
+												<strong id="goods_price_8"><em>¥</em><span name="price">50.00</span></strong>
+											</div>
+											<div class="cell s-quantity">
+												<div class="amount-warp">
+													<input type="text" value="1" name="goodsNum"
+														id="goods_number_8"
+														onClick="change_goods_number(8, this.value, 2, 16)"
+														class="text buy-num" ectype="number" defaultnumber="1">
+													<div class="a-btn">
+														<a href="#" onclick="addNum(this, 1)"
+															class="btn-add"><i class="iconfont icon-up"></i></a> <a
+															href="#" onclick="addNum(this, -1)"
+															class="btn-reduce"><i
+															class="iconfont icon-down"></i></a>
+													</div>
+												</div>
+												<div class="tc ftx-03">有货</div>
+											</div>
+											<div class="cell s-sum">
+												<strong id="goods_subtotal_8"><font
+													id="_8_subtotal"><em>¥</em><span name="subtotal">50.00</span></font></strong>
+											</div>
+											<div class="cell s-action">
+												<a href="#" id="remove_8" ectype="cartOperation"
+													data-value="{&quot;divId&quot;:&quot;cart_remove&quot;,&quot;url&quot;:&quot;flow.php?step=drop_goods&amp;id=8&quot;,&quot;cancelUrl&quot;:&quot;flow.php?step=drop_to_collect&amp;id=8&quot;,&quot;recid&quot;:8,&quot;title&quot;:&quot;删除&quot;}"
+													class="cart-remove">删除</a> <a href="#" id="store_8"
+													ectype="cartOperation"
+													data-value="{&quot;divId&quot;:&quot;cart_collect&quot;,&quot;url&quot;:&quot;flow.php?step=drop_to_collect&amp;id=8&quot;,&quot;recid&quot;:8,&quot;title&quot;:&quot;关注&quot;}"
+													class="cart-store">收藏</a>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- 商品2 结束 -->
+							</div>
+						</div>
+
+						<!-- 商品结束 -->
+					</div>
+					<div class="cart-tfoot">
+						<div class="cart-toolbar">
+							<div class="w w1200">
+								<div class="operation">
+									<a href="#" class="cart-remove-batch"
+										data-dialog="remove_collect_dialog"
+										data-divid="cart-remove-batch"
+										data-removeurl="ajax_dialog.php?act=delete_cart_goods"
+										data-collecturl="ajax_dialog.php?act=drop_to_collect"
+										data-title="删除">删除选中的商品</a> <a href="#"
+										class="cart-follow-batch" data-dialog="remove_collect_dialog"
+										data-divid="cart-collect-batch"
+										data-removeurl="ajax_dialog.php?act=delete_cart_goods"
+										data-collecturl="ajax_dialog.php?act=drop_to_collect"
+										data-title="关注">移到我的收藏</a>
+								</div>
+								<div class="toolbar-right">
+									<div class="comm-right">
+										<div class="btn-area">
+											<form name="formCart" method="post" action="flow.php"
+												onsubmit="return get_toCart();">
+												<input name="goPay" type="submit" class="submit-btn"
+													value="提交订单" id="go_pay" data-url="flow.php" /> <input
+													name="step" value="checkout" type="hidden" /> <input
+													name="store_seller" value="" type="hidden"
+													id="cart_store_seller" /> <input name="cart_value"
+													id="cart_value" value="" type="hidden" /> <input
+													name="goods_ru" id="goods_ru" value="" type="hidden" />
+											</form>
+										</div>
+										<div class="price-sum" id="total_desc">
+											<span class="txt">总价(不含运费)：</span> 
+											<span
+												class="price sumPrice" id="totalCost"
+												ectype="goods_total"></span>
+										</div>
+										<div class="reduce-sum">
+											<span class="txt">已节省：</span> <span
+												class="price totalRePrice" id="save_total_amount"
+												ectype="save_total"></span>
+										</div>
+										<div class="amount-sum">
+											已选择<em class="cart_check_num" ectype="cartNum" id="selectedCount">0</em>件商品
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			
+		</div>
+	</div>
+
+
+
+
+
+	<div class="hide">
+
+		<div id="dialog_remove" class="hide">
+			<div class="tip-box icon-box">
+				<span class="warn-icon m-icon"></span>
+				<div class="item-fore">
+					<h3 class="ftx-04">删除商品？</h3>
+					<div class="ftx-03">您可以选择移到收藏，或删除商品。</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="dialog_collect" class="hide">
+			<div class="tip-box icon-box">
+				<span class="warn-icon m-icon"></span>
+				<div class="item-fore">
+					<h3 class="ftx-04">移到收藏</h3>
+					<div class="ftx-03">移动后选中商品将不在购物车中显示。</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="flow_add_cart" class="hide">
+			<div class="tip-box icon-box">
+				<span class="warn-icon m-icon"></span>
+				<div class="item-fore">
+					<h3 class="ftx-04">请至少选中一件商品！</h3>
+				</div>
+			</div>
+		</div>
+
+		<div id="cart_gift_goods" class="hide">
+			<div class="tip-box icon-box">
+				<span class="warn-icon m-icon"></span>
+				<div class="item-fore">
+					<h3 class="ftx-04 rem">
+						最多领取<em ectype="giftNumber"></em>个商品
+					</h3>
+				</div>
+			</div>
+		</div>
+
+		<div id="set_default" class="hide">
+			<div class="tip-box icon-box">
+				<span class="warn-icon m-icon"></span>
+				<div class="item-fore">
+					<h3 class="ftx-04">您确定要设置为默认收货地址吗？</h3>
+				</div>
+			</div>
+		</div>
+
+		<div id="del_address" class="hide">
+			<div class="tip-box icon-box">
+				<span class="warn-icon m-icon"></span>
+				<div class="item-fore">
+					<h3 class="ftx-04">你确认要删除该收货地址吗？</h3>
+				</div>
+			</div>
+		</div>
+
+		<div id="no_address_cart" class="hide">
+			<div class="tip-box icon-box">
+				<span class="warn-icon m-icon"></span>
+				<div class="item-fore">
+					<h3 class="ftx-04">您还没有选择收货地址！</h3>
+				</div>
+			</div>
+		</div>
+
+		<div id="no_goods_cart" class="hide">
+			<div class="tip-box icon-box">
+				<span class="warn-icon m-icon"></span>
+				<div class="item-fore">
+					<h3 class="ftx-04">您的购物车中没有商品！</h3>
+				</div>
+			</div>
+		</div>
+
+		<div id="cart_address_not" class="hide">
+			<div class="tip-box icon-box">
+				<span class="warn-icon m-icon"></span>
+				<div class="item-fore">
+					<h3 class="ftx-04">您还没有选择收货地址！</h3>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+	
+	{include file="common/footer"/}
+
+	<!--  
+	<script type="text/javascript" src="__index__/js/suggest.js"></script>
+	<script type="text/javascript" src="__index__/js/scroll_city.js"></script>
+	<script type="text/javascript" src="__index__/js/utils.js"></script>
+	<script type="text/javascript" src="__index__/js/warehouse.js"></script>
+	<script type="text/javascript" src="__index__/js/warehouse_area.js"></script>
+	<script type="text/javascript" src="__index__/js/jquery.SuperSlide.2.1.1.js"></script>
+	<script type="text/javascript" src="__index__/js/common.js"></script>
+	<script type="text/javascript" src="__index__/js/shopping_flow.js"></script>
+	<script type="text/javascript" src="__index__/js/jquery.nyroModal.js"></script>
+	<script type="text/javascript"
+		src="__index__/js/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+	<script type="text/javascript" src="__index__/js/dsc-common.js"></script>
+	<script type="text/javascript" src="__index__/js/jquery.purebox.js"></script>
+	<script type="text/javascript" src="__index__/js/region.js"></script>
+	
+	<script type="text/javascript" src="__index__/js/checkAll.js"></script>
+	-->
+	
+	<script type="text/javascript">
+		$(function() {
+			// 加载页面后全部勾选
+			checkAll();
+
+			// 监听数量的输入框，绑定输入框的keyup和afterpaste事件
+			$("input[name='goodsNum']").on("keyup afterpaste", function() {
+				// 如果输入框输入非数字的字符，立马将该字符替换为空
+				var corrected = $(this).val().replace(/[^\d]/g,'');
+				if (corrected == '' || corrected == 0) {
+					corrected = 1;
+				}		
+				$(this).val(corrected);
+				
+				// 更新小计和总价
+				$goodsItem = $(this).parents(".item-single");
+				// 单价
+				var price = parseFloat($goodsItem.find("span[name='price']").text());
+				// 数量
+				var num = parseInt($(this).val());
+				$goodsItem.find("span[name='subtotal']").html( (price*num).toFixed(2) );
+				
+				// 如果当前商品勾选了。那么应该也更新总价
+				if ($goodsItem.find("input[name='checkItem']").prop("checked")) {
+					calTotalCost();
+				}
+			});
+		});
+	
+		function checkAll() {
+			//console.log(allChk);
+			// jquery-1.4.2 没有prop()方法
+			// 注意测试，发现1.9.1无法使用attr()操作checked属性
+			
+			// “全选”这个复选框的状态
+			var isSelectedAll = $("#cart-selectall").prop("checked");	
+			$items = $("input[name='checkItem']");
+			// 全部复选框选中
+			$items.prop("checked", isSelectedAll);
+			// 更改 已勾选复选框的数量
+			$("#selectedCount").html(isSelectedAll ? $items.length : 0);
+			// 重新计算总价
+			calTotalCost();
+		}	
+		
+		function checkOne(cur) {
+			// 标志变量：是否已经全部选中
+			var isAllSelected = true;
+			// 当改变当前复选框的状态时，判断是否所有复选框状已经全部选中
+			// 如果是，改变“全选”这个复选框的状态
+			$("input[name='checkItem']").each(function() {
+				if (!$(this).prop("checked")) {
+					isAllSelected = false;
+				}
+			});
+			$("#cart-selectall").prop("checked", isAllSelected);
+			$("#selectedCount").html($("input[name='checkItem']:checked").length);
+			// 重新计算总价
+			calTotalCost();
+		}
+		
+		// 计算勾选商品的总价
+		function calTotalCost() {
+			var total = 0;
+			$("span[name='price']").each(function(index, element) {
+				// 判断是否勾选				
+				if ($("input[name='checkItem']").eq(index).prop("checked")) {
+					var price = parseFloat($(this).text()); // 单价，浮点数
+					// 注意不要用[]来取数组的某个元素，那样取出来是html代码，而并非jquery对象
+					var num = parseInt($("input[name='goodsNum']").eq(index).val()); // 数量，整数
+					total += (price * num);
+				}
+			});
+			//console.log(total);
+			$("#totalCost").html(total);
+		}
+		
+		// 加减商品数量
+		function addNum(obj, step) { // obj：当前对象  step：要加减的值
+			//console.log(num);
+			var max = 10; // 最大值
+			
+			$goodsNum = $(obj).parent(".a-btn").siblings("input[name='goodsNum']");
+			var cur = parseInt($goodsNum.val()); // 当前的数量
+			//console.log(cur);
+			var corrected = 0;
+			if (step > 0) {
+				corrected = cur+step > max ? max : (cur+step);
+			} else {
+				corrected = cur+step < 1 ? 1 : (cur+step);
+			}
+			$goodsNum.val(corrected);
+			
+			// 更新小计
+			$goodsItem = $(obj).parents(".item-single");
+			//console.log($goodsItem);
+			var price = parseFloat($goodsItem.find("span[name='price']").text());
+			$goodsItem.find("span[name='subtotal']").html( (price*corrected).toFixed(2) );
+			
+			// 如果当前商品勾选了。那么应该也更新总价
+			if ($goodsItem.find("input[name='checkItem']").prop("checked")) {
+				calTotalCost();
+			}
+		}
+    </script>
+
+</body>
+</html>
