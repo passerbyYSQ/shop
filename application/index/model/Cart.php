@@ -7,6 +7,17 @@ use think\Model;
  */
 class Cart extends Model {
     
+    // 获取某个用户的购物车内容
+    public function list($memberId) {
+        return db('cart')
+        ->alias('c')
+        ->join('goods g', 'c.goodsId=g.id')
+        ->where('memberId', $memberId)
+        // last：商品库存
+        ->field('c.id as cartId, c.count, g.id as goodsId, goodsName, mainPic, salePrice, g.count as last')
+        ->select();
+    }
+    
     // 返回一个Model对象
     public function findOne($memberId, $goodsId) {
         return Cart::where([

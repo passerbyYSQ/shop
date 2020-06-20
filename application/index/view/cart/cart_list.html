@@ -24,6 +24,7 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 </head>
 
 <body class="bg-ligtGary">
+	
 	<div class="site-nav" id="site-nav">
 		<div class="w w1200">
 			<div class="fl">
@@ -133,28 +134,27 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 						<div class="cart-item" ectype="shopItem">
 
 							<div class="item-list" ectype="itemList">
+								{foreach $itemList as $item}
 								<!-- 商品1 开始 -->
 								<div class="item-single">
-									<div class="item-item selected" ectype="item" id="product_775"
-										data-goodsid="775">
+									<div class="item-item selected" ectype="item">
 										<div class="item-form">
 											<div class="cell s-checkbox">
 												<div class="cart-checkbox" ectype="ckList">
-													<input type="checkbox" id="checkItem_8" value="8" onChange="checkOne(this)"
+													<input type="checkbox" value="{$item.cartId}" onChange="checkOne(this)" id="checkItem_{$item.cartId}"
 														name="checkItem" class="ui-checkbox" ectype="ckGoods">
-													<label for="checkItem_8" class="ui-label-14">&nbsp;</label>
+													<label for="checkItem_{$item.cartId}" class="ui-label-14">&nbsp;</label>
 												</div>
 											</div>
 											<div class="cell s-goods">
 												<div class="goods-item">
 													<div class="p-img">
 														<a href="#" target="_blank"><img
-															src="__index__/img/0_thumb_G_1490169281436.jpg" width="70"
+															src="__public__/{$item.mainPic}" width="70"
 															height="70"></a>
 													</div>
 													<div class="item-msg">
-														<a href="#" target="_blank">韩都衣舍2017韩版女装春装新款条纹显瘦百搭宽松v领七分袖衬衫潮
-															领券立减/单件包邮/七天无理由退换</a>
+														<a href="#" target="_blank">{$item.goodsName}</a>
 														<div class="gds-types"></div>
 													</div>
 												</div>
@@ -163,102 +163,34 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 												&nbsp;
 											</div>
 											<div class="cell s-price">
-												<strong id="goods_price_8"><em>¥</em><span name="price">60.00</span></strong>
+												<strong id="goods_price_8"><em>¥</em><span name="price">{$item.salePrice}</span></strong>
 											</div>
 											<div class="cell s-quantity">
 												<div class="amount-warp">
-													<input type="text" value="1" name="goodsNum" 
-														onchange="change_goods_number(8, this.value, 2, 16)"
+													<input type="text" value="{$item.count}" name="goodsNum" 
 														class="text buy-num" ectype="number" defaultnumber="1">
 													<div class="a-btn">
-														<a href="#" onclick="addNum(this, 1)"
-															class="btn-add"><i class="iconfont icon-up"></i></a> <a
-															href="#" onclick="addNum(this, -1)"
-															class="btn-reduce"><i
-															class="iconfont icon-down"></i></a>
+														<a href="javascript:void(0)" onClick="addNum(this, 1, {$item.last})"
+															class="btn-add"><i class="iconfont icon-up"></i></a> 
+														<a href="javascript:void(0)" onclick="addNum(this, -1, {$item.last})"
+															class="btn-reduce"><i class="iconfont icon-down"></i></a>
 													</div>
+													<input type="button" value="更新" style="width:30px;"
+													onClick="requestUpdateCount({$item.cartId}, $(this).siblings('input[name=goodsNum]').val())"/>
 												</div>
-												<div class="tc ftx-03">有货</div>
 											</div>
 											<div class="cell s-sum">
-												<strong id="goods_subtotal_8"><font
-													id="_8_subtotal"><em>¥</em><span name="subtotal">60.00</span></font></strong>
+												<strong id="goods_subtotal_8"><font><em>¥</em><span name="subtotal">{$item.count * $item.salePrice}</span></font></strong>
 											</div>
 											<div class="cell s-action">
-												<a href="#" id="remove_8" ectype="cartOperation"
-													data-value="{&quot;divId&quot;:&quot;cart_remove&quot;,&quot;url&quot;:&quot;flow.php?step=drop_goods&amp;id=8&quot;,&quot;cancelUrl&quot;:&quot;flow.php?step=drop_to_collect&amp;id=8&quot;,&quot;recid&quot;:8,&quot;title&quot;:&quot;删除&quot;}"
-													class="cart-remove">删除</a> <a href="#" id="store_8"
-													ectype="cartOperation"
-													data-value="{&quot;divId&quot;:&quot;cart_collect&quot;,&quot;url&quot;:&quot;flow.php?step=drop_to_collect&amp;id=8&quot;,&quot;recid&quot;:8,&quot;title&quot;:&quot;关注&quot;}"
-													class="cart-store">收藏</a>
+												<a href="javascript:void(0)" onClick="requestDeleteOne({$item.cartId}, this)"  ectype="cartOperation" class="cart-remove">删除</a> 
+												<a href="javascript:void(0)" ectype="cartOperation" class="cart-store">收藏</a>
 											</div>
 										</div>
 									</div>
 								</div>
 								<!-- 商品1 结束 -->
-
-								<!-- 商品2 结束 -->
-								<div class="item-single">
-									<div class="item-item selected" ectype="item" id="product_775"
-										data-goodsid="775">
-										<div class="item-form">
-											<div class="cell s-checkbox">
-												<div class="cart-checkbox" ectype="ckList">
-													<input type="checkbox" id="checkItem_9" value="9"  onChange="checkOne(this)"
-														name="checkItem" class="ui-checkbox" ectype="ckGoods">
-													<label for="checkItem_9" class="ui-label-14">&nbsp;</label>
-												</div>
-											</div>
-											<div class="cell s-goods">
-												<div class="goods-item">
-													<div class="p-img">
-														<a href="#" target="_blank"><img
-															src="__index__/img/0_thumb_G_1490169281436.jpg" width="70"
-															height="70"></a>
-													</div>
-													<div class="item-msg">
-														<a href="#" target="_blank">韩都衣舍2017韩版女装春装新款条纹显瘦百搭宽松v领七分袖衬衫潮
-															领券立减/单件包邮/七天无理由退换</a>
-														<div class="gds-types"></div>
-													</div>
-												</div>
-											</div>
-											<div class="cell s-props">&nbsp;</div>
-											<div class="cell s-price">
-												<strong id="goods_price_8"><em>¥</em><span name="price">50.00</span></strong>
-											</div>
-											<div class="cell s-quantity">
-												<div class="amount-warp">
-													<input type="text" value="1" name="goodsNum"
-														id="goods_number_8"
-														onClick="change_goods_number(8, this.value, 2, 16)"
-														class="text buy-num" ectype="number" defaultnumber="1">
-													<div class="a-btn">
-														<a href="#" onclick="addNum(this, 1)"
-															class="btn-add"><i class="iconfont icon-up"></i></a> <a
-															href="#" onclick="addNum(this, -1)"
-															class="btn-reduce"><i
-															class="iconfont icon-down"></i></a>
-													</div>
-												</div>
-												<div class="tc ftx-03">有货</div>
-											</div>
-											<div class="cell s-sum">
-												<strong id="goods_subtotal_8"><font
-													id="_8_subtotal"><em>¥</em><span name="subtotal">50.00</span></font></strong>
-											</div>
-											<div class="cell s-action">
-												<a href="#" id="remove_8" ectype="cartOperation"
-													data-value="{&quot;divId&quot;:&quot;cart_remove&quot;,&quot;url&quot;:&quot;flow.php?step=drop_goods&amp;id=8&quot;,&quot;cancelUrl&quot;:&quot;flow.php?step=drop_to_collect&amp;id=8&quot;,&quot;recid&quot;:8,&quot;title&quot;:&quot;删除&quot;}"
-													class="cart-remove">删除</a> <a href="#" id="store_8"
-													ectype="cartOperation"
-													data-value="{&quot;divId&quot;:&quot;cart_collect&quot;,&quot;url&quot;:&quot;flow.php?step=drop_to_collect&amp;id=8&quot;,&quot;recid&quot;:8,&quot;title&quot;:&quot;关注&quot;}"
-													class="cart-store">收藏</a>
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- 商品2 结束 -->
+								{/foreach}
 							</div>
 						</div>
 
@@ -268,12 +200,15 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 						<div class="cart-toolbar">
 							<div class="w w1200">
 								<div class="operation">
-									<a href="#" class="cart-remove-batch"
+									<a href="javascript:void(0)" onClick="requestDeleteMore()" 
+									class="cart-remove-batch"
 										data-dialog="remove_collect_dialog"
 										data-divid="cart-remove-batch"
 										data-removeurl="ajax_dialog.php?act=delete_cart_goods"
 										data-collecturl="ajax_dialog.php?act=drop_to_collect"
-										data-title="删除">删除选中的商品</a> <a href="#"
+										data-title="删除">删除选中的商品</a> 
+										
+									<a href="#"
 										class="cart-follow-batch" data-dialog="remove_collect_dialog"
 										data-divid="cart-collect-batch"
 										data-removeurl="ajax_dialog.php?act=delete_cart_goods"
@@ -319,10 +254,6 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 			
 		</div>
 	</div>
-
-
-
-
 
 	<div class="hide">
 
@@ -416,25 +347,6 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 	
 	{include file="common/footer"/}
 
-	<!--  
-	<script type="text/javascript" src="__index__/js/suggest.js"></script>
-	<script type="text/javascript" src="__index__/js/scroll_city.js"></script>
-	<script type="text/javascript" src="__index__/js/utils.js"></script>
-	<script type="text/javascript" src="__index__/js/warehouse.js"></script>
-	<script type="text/javascript" src="__index__/js/warehouse_area.js"></script>
-	<script type="text/javascript" src="__index__/js/jquery.SuperSlide.2.1.1.js"></script>
-	<script type="text/javascript" src="__index__/js/common.js"></script>
-	<script type="text/javascript" src="__index__/js/shopping_flow.js"></script>
-	<script type="text/javascript" src="__index__/js/jquery.nyroModal.js"></script>
-	<script type="text/javascript"
-		src="__index__/js/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-	<script type="text/javascript" src="__index__/js/dsc-common.js"></script>
-	<script type="text/javascript" src="__index__/js/jquery.purebox.js"></script>
-	<script type="text/javascript" src="__index__/js/region.js"></script>
-	
-	<script type="text/javascript" src="__index__/js/checkAll.js"></script>
-	-->
-	
 	<script type="text/javascript">
 		$(function() {
 			// 加载页面后全部勾选
@@ -446,7 +358,8 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 				var corrected = $(this).val().replace(/[^\d]/g,'');
 				if (corrected == '' || corrected == 0) {
 					corrected = 1;
-				}		
+				}	
+				
 				$(this).val(corrected);
 				
 				// 更新小计和总价
@@ -509,13 +422,12 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 				}
 			});
 			//console.log(total);
-			$("#totalCost").html(total);
+			$("#totalCost").html(total.toFixed(2));
 		}
 		
 		// 加减商品数量
-		function addNum(obj, step) { // obj：当前对象  step：要加减的值
+		function addNum(obj, step, max) { // obj：当前对象  step：要加减的值	max：最大值
 			//console.log(num);
-			var max = 10; // 最大值
 			
 			$goodsNum = $(obj).parent(".a-btn").siblings("input[name='goodsNum']");
 			var cur = parseInt($goodsNum.val()); // 当前的数量
@@ -537,6 +449,74 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 			// 如果当前商品勾选了。那么应该也更新总价
 			if ($goodsItem.find("input[name='checkItem']").prop("checked")) {
 				calTotalCost();
+			}
+		}
+		
+		function requestUpdateCount(cartId, newCount) {
+			console.log(newCount);
+			$.ajax({
+				type: "post",
+				url: "{:url('cart/updateNum')}",
+				data: {
+					cartId: cartId,
+					count : newCount
+				},
+				success: function(res) {
+					//console.log(res);
+					if (res.status) {
+						alert('修改数量成功');
+					} else {
+						alert('修改数量成功失败：' + res.msg);
+					}
+				}
+			});
+		}
+		
+		function requestDeleteOne(cartId, obj) {
+			if (confirm('是否确认删除？')) {
+				$.ajax({
+					type: "post",
+					url: "{:url('cart/deleteOne')}",
+					data: {
+						cartId: cartId
+					},
+					success: function(res) {
+						//console.log(res);
+						if (res) {
+							$(obj).parents(".item-single").remove();
+						} else {
+							alert('删除失败');
+						}
+					}
+				});
+			}
+		}
+		
+		function requestDeleteMore() {
+			if (confirm('是否确认删除购物车中勾选的商品？')) {
+				var cartIds = $("input[name='checkItem']:checked")
+									.map(function() {
+										return $(this).val()
+									}).get();
+				//console.log(cartIds);
+				
+				$.ajax({
+					type: "post",
+					url: "{:url('cart/deleteMore')}",
+					data: {
+						cartIds: cartIds
+					},
+					success: function(res) {
+						console.log(res);
+						if (res.status) {
+							$("input[name='checkItem']:checked").parents(".item-single").remove();
+						} else {
+							alert(res.msg);
+							window.location.reload();
+						}
+					}
+				});
+				
 			}
 		}
     </script>
