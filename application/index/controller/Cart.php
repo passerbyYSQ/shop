@@ -31,11 +31,19 @@ class Cart extends Controller {
         }
         
         // 有一个安全bug。假如有人登录了自己的账号，修改前端页面的cartId，可以删除别人购物车的商品。
-        // 暂时不考虑这么多。。。
         
         $cartId = input('post.cartId');
-        $res = CartModel::destroy($cartId);
-        return json($res == 1 ? true : false);
+        $item = CartModel::get($cartId);
+        $res['status'] = true;
+        if ($item->memberId != session('member.id')) { // 企图删除他人购物车中的商品
+            $res['status'] = false;
+            $res['msg'] = "您无权限操作";
+        } else if ($item->delete() != 1) {
+            $res['status'] = false;
+            $res['msg'] = "删除失败" . $item->getError();
+        }
+
+        return json($res);
     }
     
     public function deleteMore() {
@@ -48,7 +56,7 @@ class Cart extends Controller {
         
         $res['status'] = true;
         foreach($items as $item) {
-            if (empty($item) || $item->delete() != 1) {
+            if (empty($item) || $item->memberId != session('member.id') || $item->delete() != 1) {
                 $res['status'] = false;
                 $res['msg'] = '部分删除失败';
                 return json($res);
@@ -68,6 +76,7 @@ class Cart extends Controller {
         
         $cartId = input('post.cartId');
         $count = input('post.count');
+
         if (!is_numeric($count)) {
             $res['status'] = false;
             $res['msg'] = '参数非法，数量不是纯数字';
@@ -75,9 +84,17 @@ class Cart extends Controller {
         }
         
         $item = CartModel::get($cartId);
+        
+        // 企图修改他人购物车中的商品
+        if ($item->memberId != session('member.id')) {
+            $res['status'] = false;
+            $res['msg'] = "您无权限操作";
+            return json($res);
+        }
 
         // 判断是否超出库存
         $goods = GoodsModel::get($item->goodsId);
+
         if ($count > $goods->count) {
             $res['status'] = false;
             $res['msg'] = '库存不足，剩余 ' . $goods->count . '件';
@@ -85,9 +102,9 @@ class Cart extends Controller {
         }
             
         $item->count = $count;
-        if (!$item->save()) {
+        if (!$item->save()) { // 新的值和旧的值一样，save不会修改
             $res['status'] = false;
-            $res['msg'] = $item->getError();
+            $res['msg'] = '请修改不同的数量';
         }
         return json($res);
     }
@@ -119,7 +136,6 @@ class Cart extends Controller {
                 $res['msg'] = $item->getError();
             } 
         } else {
-            
             $goods = GoodsModel::get($goodsId);
             if ($item->count >= $goods->count) {
                 $res['status'] = false;

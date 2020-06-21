@@ -49,6 +49,10 @@ class Member extends Controller {
     public function login() {
         //var_dump(session('member'));exit();
         
+        if (!empty(session('member'))) {
+            $this->error('请勿重复登录');
+        }
+        
         if (request()->isPost()) {
             $phone = input('post.username');
             $password = input('post.password');
@@ -75,6 +79,10 @@ class Member extends Controller {
     }
     
     public function logout() { 
+        if (empty(session('member'))) {
+            $this->error('请先登录');
+        }
+        
         session('member', null);
         $this->success('退出成功');
     }

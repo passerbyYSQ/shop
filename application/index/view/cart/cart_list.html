@@ -2,9 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="Keywords" content="童攀课堂-php课堂-www.tongpankt.com" />
-<meta name="Description" content="童攀课堂-php课堂-www.tongpankt.com" />
-<title>交流群：383432579</title>
+<title>{$Think.session.member.memberName} - 购物车</title>
 <link rel="shortcut icon" href="favicon.ico" />
 <link rel="stylesheet" type="text/css" href="__index__/css/base.css" />
 <link rel="stylesheet" type="text/css" href="__index__/css/style.css" />
@@ -29,10 +27,16 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 		<div class="w w1200">
 			<div class="fl">
 				<div class="txt-info" id="ECS_MEMBERZONE">
-
-					<a href="#" class="link-login red">请登录</a> <a href="#"
-						class="link-regist">免费注册</a>
-
+				{empty name="$Think.session.member"}
+					<a href="{:url('member/login')}" class="link-login red">请登录</a> 
+					<a href="{:url('member/register')}" class="link-regist">免费注册</a>
+				{else/}
+					<a href="#" class="link-login red">
+						{$Think.session.member.phone} | {$Think.session.member.memberName}
+					</a> 
+					<a href="#" class="link-regist" 
+					onClick="return confirm('是否确认退出当前账号？');">退出</a>
+				{/empty}
 				</div>
 			</div>
 			<ul class="quick-menu fr">
@@ -59,7 +63,6 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 						<a href="#">客户服务</a>
 					</div>
 				</li>
-				<li class="spacer"></li>
 			</ul>
 		</div>
 	</div>
@@ -176,7 +179,7 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 															class="btn-reduce"><i class="iconfont icon-down"></i></a>
 													</div>
 													<input type="button" value="更新" style="width:30px;"
-													onClick="requestUpdateCount({$item.cartId}, $(this).siblings('input[name=goodsNum]').val())"/>
+													onClick="requestUpdateCount({$item.cartId}, $(this).siblings('input[name=goodsNum]').val(), this)"/>
 												</div>
 											</div>
 											<div class="cell s-sum">
@@ -362,6 +365,8 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 				
 				$(this).val(corrected);
 				
+				/*
+				// 服务端更新后，页面才更新
 				// 更新小计和总价
 				$goodsItem = $(this).parents(".item-single");
 				// 单价
@@ -374,6 +379,7 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 				if ($goodsItem.find("input[name='checkItem']").prop("checked")) {
 					calTotalCost();
 				}
+				*/
 			});
 		});
 	
@@ -440,6 +446,9 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 			}
 			$goodsNum.val(corrected);
 			
+			/* 
+			// 服务端更新后，页面才更新
+			
 			// 更新小计
 			$goodsItem = $(obj).parents(".item-single");
 			//console.log($goodsItem);
@@ -450,10 +459,27 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 			if ($goodsItem.find("input[name='checkItem']").prop("checked")) {
 				calTotalCost();
 			}
+			*/
 		}
 		
-		function requestUpdateCount(cartId, newCount) {
-			console.log(newCount);
+		// 更新小计和总价
+		// 服务端更新后，页面才更新
+		function updateData(obj) { // obj 是“更新”的按钮
+			$goodsItem = $(obj).parents(".item-single");
+			// 单价
+			var price = parseFloat($goodsItem.find("span[name='price']").text());
+			// 数量
+			var num = parseInt($goodsItem.find("input[name='goodsNum']").val());
+			$goodsItem.find("span[name='subtotal']").html( (price*num).toFixed(2) );
+			
+			// 如果当前商品勾选了。那么应该也更新总价
+			if ($goodsItem.find("input[name='checkItem']").prop("checked")) {
+				calTotalCost(); // 更新总价
+			}
+		}
+		
+		function requestUpdateCount(cartId, newCount, obj) {
+			//console.log(newCount);
 			$.ajax({
 				type: "post",
 				url: "{:url('cart/updateNum')}",
@@ -465,8 +491,10 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 					//console.log(res);
 					if (res.status) {
 						alert('修改数量成功');
+						// 重新计算小计和总价
+						updateData(obj);
 					} else {
-						alert('修改数量成功失败：' + res.msg);
+						alert('修改数量失败：' + res.msg);
 					}
 				}
 			});
@@ -482,10 +510,14 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 					},
 					success: function(res) {
 						//console.log(res);
-						if (res) {
+						if (res.status) {
 							$(obj).parents(".item-single").remove();
+							// 重新计算总价
+							calTotalCost();
+							// 更改 已勾选复选框的数量
+							$("#selectedCount").html($("input[name='checkItem']:checked").length);
 						} else {
-							alert('删除失败');
+							alert(res.msg);
 						}
 					}
 				});
@@ -510,6 +542,10 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 						console.log(res);
 						if (res.status) {
 							$("input[name='checkItem']:checked").parents(".item-single").remove();
+							// 重新计算总价
+							calTotalCost();
+							// 更改 已勾选复选框的数量
+							$("#selectedCount").html($("input[name='checkItem']:checked").length);
 						} else {
 							alert(res.msg);
 							window.location.reload();
