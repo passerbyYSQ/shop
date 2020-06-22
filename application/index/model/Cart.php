@@ -7,6 +7,16 @@ use think\Model;
  */
 class Cart extends Model {
     
+    public function selectByIds($cartIds) {
+        return db('cart')
+        ->alias('c')
+        ->join('goods g', 'c.goodsId=g.id')
+        ->where('c.id', 'in', $cartIds)
+        // last：商品库存
+        ->field('c.id as cartId, c.count, g.id as goodsId, goodsName, mainPic, salePrice, g.count as last')
+        ->select();
+    }
+    
     // 获取某个用户的购物车内容
     public function list($memberId) {
         return db('cart')

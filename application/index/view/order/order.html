@@ -1,0 +1,636 @@
+
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>订单</title>
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="stylesheet" type="text/css" href="__index__/css/base.css" />
+<link rel="stylesheet" type="text/css" href="__index__/css/style.css" />
+<link rel="stylesheet" type="text/css" href="__index__/css/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="__index__/css/purebox.css" />
+<link rel="stylesheet" type="text/css" href="__index__/css/quickLinks.css" />
+
+<style>
+	.province, .city, .area {
+		height: 34px;
+		margin-top: 3px;
+		margin-right: 8px;
+	}
+</style>
+
+<script type="text/javascript" src="__index__/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="__index__/js/jquery.json.js"></script>
+<script type="text/javascript" src="__index__/js/transport_jquery.js"></script>
+<script type="text/javascript">
+	//加载效果
+	var load_cart_info = '<img src="themes/wrzcnet_wygk2019/images/load/loadGoods.gif" class="load" />';
+	var load_icon = '<img src="themes/wrzcnet_wygk2019/images/load/load.gif" width="200" height="200" />';
+</script>
+<link rel="stylesheet" type="text/css"
+	href="__index__/css/perfect-scrollbar.min.css" />
+</head>
+
+<body class="bg-ligtGary">
+	<div class="site-nav" id="site-nav">
+		<div class="w w1200">
+			<div class="fl">
+				<div class="txt-info" id="ECS_MEMBERZONE">
+					{empty name="$Think.session.member"} <a
+						href="{:url('member/login')}" class="link-login red">请登录</a> <a
+						href="{:url('member/register')}" class="link-regist">免费注册</a>
+					{else/} <a href="#" class="link-login red">
+						{$Think.session.member.phone} | {$Think.session.member.memberName}
+					</a> <a href="#" class="link-regist"
+						onClick="return confirm('是否确认退出当前账号？');">退出</a> {/empty}
+				</div>
+			</div>
+			<ul class="quick-menu fr">
+				<li>
+					<div class="dt">
+						<a href="#">我的订单</a>
+					</div>
+				</li>
+				<li class="spacer"></li>
+				<li>
+					<div class="dt">
+						<a href="#">我的浏览</a>
+					</div>
+				</li>
+				<li class="spacer"></li>
+				<li>
+					<div class="dt">
+						<a href="#">我的收藏</a>
+					</div>
+				</li>
+				<li class="spacer"></li>
+				<li>
+					<div class="dt">
+						<a href="#">客户服务</a>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="header header-cart">
+		<div class="w w1200">
+			<div class="logo">
+				<div class="logoImg">
+					<a href="http://mall.wygk.cn/index.php"><img
+						src="/shop/public/static/index/img/logo.png" /></a>
+				</div>
+				<div class="tit">结算页</div>
+			</div>
+			<div class="cart-stepflex">
+				<div class="cart-step-item cur">
+					<span>1.我的购物车</span> <i class="iconfont icon-arrow-right-alt"></i>
+				</div>
+				<div class="cart-step-item curr">
+					<span>2.填写订单信息</span> <i class="iconfont icon-arrow-right-alt"></i>
+				</div>
+				<div class="cart-step-item ">
+					<span>3.成功提交订单</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<form action="flow.php" method="post" name="doneTheForm"
+			class="validator" id="theForm">
+			<div class="w w1200">
+				<div class="checkout-warp">
+
+					<div class="ck-step" id="consignee_list">
+						<div class="ck-step-tit">
+							<h3>收货人信息</h3>
+							<a href="user.php?act=address_list" class="extra-r"
+								target="_blank">管理收货人地址</a>
+						</div>
+						<div class="ck-step-cont" id="consignee-addr">
+							<div class="consignee-warp">
+								{$allAddress}
+								<div class="cs-w-item">
+									<a href="javascript:void(0);" class="add-new-address" onClick="showAddressDialog(true)"
+										ectype="dialog_checkout">
+										<i class="iconfont icon-add-quer"></i><span>添加新地址</span>
+									</a>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+					</div>
+
+
+
+
+					<div class="ck-step checkout">
+						<div class="ck-step-tit">
+							<h3>支付方式</h3>
+						</div>
+						<div class="ck-step-cont">
+							<div class="payment-warp">
+								<div class="payment-list" ectype="paymentType">
+
+									<div class="p-radio-item payment-item  item-selected"
+										data-value='{"type":"cod","payid":"16","allow":""}'>
+										<span> <input type="radio" isCod="1" name="payment" checked
+											class="ui-radio" value="16" /> 支付宝支付
+										</span> <b></b>
+									</div>
+									<div class="p-radio-item payment-item"
+										data-value='{"type":"onlinepay","payid":"15","allow":""}'>
+										<span> <input type="radio"  isCod="0"
+											name="payment" class="ui-radio" value="15" /> 微信支付
+										</span> <b></b>
+									</div>
+									<div class="p-radio-item payment-item"
+										data-value='{"type":"balance","payid":"11","allow":""}'>
+										<span> <input type="radio" isCod="0" name="payment"
+											class="ui-radio" value="11" />  货到付款
+										</span> <b></b>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+
+					<div class="ck-step">
+						<div class="ck-step-tit">
+							<h3>商品信息</h3>
+							<a href="{:url('cart/index')}" class="extra-r">返回购物车</a>
+						</div>
+						<div class="ck-step-cont">
+							<div class="ck-goods-warp" id="goods_inventory">
+
+								<div class="ck-goods-list">
+									<div class="ck-goods-item" ectype="shoppingList">
+										<div class="ck-goods-tit">
+											<div class="ck-store">
+												<a href="javascript:;" class="shop-name">网软自营</a> <a
+													href="javascript:;" id="IM" onclick="openWin(this)"
+													ru_id="0" class="p-kefu  p-c-violet" target="_blank"><i
+													class="iconfont icon-kefu"></i></a>
+
+											</div>
+											<div class="ck-dis-modes">
+												<div class="ck-dis-tit">配送方式：</div>
+												<span class="ftx-01">暂不支持配送</span> <input type="hidden"
+													name="ru_id[]" value="0" /> <input type="hidden"
+													name="ru_name[]" value="网软自营" /> <input type="hidden"
+													name="shipping[]" class="shipping_0" data-sellerid="0"
+													value="0" autocomplete="off" /> <input type="hidden"
+													name="shipping_code[]" class="shipping_code_0" value=""
+													autocomplete="off" /> <input type="hidden"
+													name="shipping_type[]" class="shipping_type_0" value="0"
+													autocomplete="off" />
+											</div>
+										</div>
+										<div class="ck-goods-cont">
+											{foreach $items as $item}
+											<div class="cg-item last">
+												<div class="c-col cg-name">
+													<input name="cart_info[]" type="hidden"
+														value="0|45_789_2_0"> <a
+														href="http://mall.wygk.cn/goods.php?id=789"
+														target="_blank">
+														<div class="p-img">
+															<img src="__public__/{$item.mainPic}" width="48" height="48">
+														</div>
+														<div class="p-info">
+															<div class="p-name">{$item.goodsName}</div>
+														</div>
+													</a>
+												</div>
+												<div class="c-col cg-price">
+													<span class="fr cl"><em>¥</em>{$item.salePrice}</span>
+												</div>
+												<div class="c-col cg-number">x{$item.count}</div>
+												<div class="c-col cg-state">
+													<span>{$item.last > 0 ? '有货' : '售罄'}</span>
+													<input type="hidden" value="{$item.last}" />
+												</div>
+												<div class="c-col cg-sum">
+													<em>¥</em>{$item.salePrice * $item.count}
+												</div>
+												<div class="cg-item-line"></div>
+												<i class="dian"></i>
+											</div>
+											{/foreach}
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="ck-order-remark">
+								<input name="postscript" type="text" id="remarkText"
+									maxlength="45" size="15" class="text" placeholder="订单备注 限60个字"
+									autocomplete="off"
+									onblur="if(this.value==''||this.value=='订单备注 限60个字'){this.value='订单备注 限60个字';this.style.color='#cccccc'}"
+									onfocus="if(this.value=='订单备注 限60个字') {this.value='';};this.style.color='#666';">
+								<span class="prompt">提示：请勿填写有关支付、收货、发票方面的信息</span>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div id="ECS_ORDERTOTAL">
+
+					<div class="order-summary">
+						<div class="statistic">
+							<div class="list">
+								<span><em>1</em> 件商品，总商品金额：</span> <em class="price"
+									id="warePriceId"><em>¥</em>79.00</em>
+							</div>
+							<div class="list">
+								<span>应付总额：</span> <em class="price-total"><em>¥</em>79.00</em>
+							</div>
+						</div>
+					</div>
+
+					<div class="checkout-foot" ectype="tfoot-toolbar">
+						<div class="w w1200">
+							<div class="btn-area">
+								<input type="button" id="submit-done" class="submit-btn"
+									value="提交订单">
+							</div>
+							<div class="d-address">
+								<span id="sendAddr">寄送至：广东佛山高明区华南师范大学南海校区</span> <span
+									id="sendMobile">收货人：小明&nbsp;&nbsp;18575784345</span>
+							</div>
+						</div>
+						<input name="goods_flow_type" value="101" type="hidden"> <input
+							name="rec_number_str" value="" type="hidden"> <input
+							name="shipping_prompt_str" value="" type="hidden"> <input
+							type="hidden" id="store_id" name='store_id' value="0" /> <input
+							type="hidden" id="store_seller" value="" name="store_seller">
+						<input type="hidden" value="3" name="warehouse_id"> <input
+							type="hidden" value="30" name="area_id"> <input
+							name="sc_guid" value="F11EBDD6-C44A-4FAD-9862-BCED6F5103EC"
+							type="hidden" autocomplete="off"> <input name="sc_rand"
+							value="3962" type="hidden" autocomplete="off">
+					</div>
+
+				</div>
+
+				<input type="hidden" name="user_id" value="73" autocomplete="off" />
+				<input type="hidden" name="done_cart_value" value="45"
+					autocomplete="off" /> <input type="hidden" name="step"
+					value="done" autocomplete="off" /> <input type="hidden"
+					name="is_address" value="0" autocomplete="off" />
+			</div>
+		</form>
+	</div>
+
+	<div class="hide">
+
+		<div id="dialog_remove" class="hide">
+			<div class="tip-box icon-box">
+				<span class="warn-icon m-icon"></span>
+				<div class="item-fore">
+					<h3 class="ftx-04">删除商品？</h3>
+					<div class="ftx-03">您可以选择移到收藏，或删除商品。</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="dialog_collect" class="hide">
+			<div class="tip-box icon-box">
+				<span class="warn-icon m-icon"></span>
+				<div class="item-fore">
+					<h3 class="ftx-04">移到收藏</h3>
+					<div class="ftx-03">移动后选中商品将不在购物车中显示。</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="flow_add_cart" class="hide">
+			<div class="tip-box icon-box">
+				<span class="warn-icon m-icon"></span>
+				<div class="item-fore">
+					<h3 class="ftx-04">请至少选中一件商品！</h3>
+				</div>
+			</div>
+		</div>
+
+		<div id="cart_gift_goods" class="hide">
+			<div class="tip-box icon-box">
+				<span class="warn-icon m-icon"></span>
+				<div class="item-fore">
+					<h3 class="ftx-04 rem">
+						最多领取<em ectype="giftNumber"></em>个商品
+					</h3>
+				</div>
+			</div>
+		</div>
+
+		<div id="set_default" class="hide">
+			<div class="tip-box icon-box">
+				<span class="warn-icon m-icon"></span>
+				<div class="item-fore">
+					<h3 class="ftx-04">您确定要设置为默认收货地址吗？</h3>
+				</div>
+			</div>
+		</div>
+
+		<div id="del_address" class="hide">
+			<div class="tip-box icon-box">
+				<span class="warn-icon m-icon"></span>
+				<div class="item-fore">
+					<h3 class="ftx-04">你确认要删除该收货地址吗？</h3>
+				</div>
+			</div>
+		</div>
+
+		<div id="no_address_cart" class="hide">
+			<div class="tip-box icon-box">
+				<span class="warn-icon m-icon"></span>
+				<div class="item-fore">
+					<h3 class="ftx-04">您还没有选择收货地址！</h3>
+				</div>
+			</div>
+		</div>
+
+		<div id="no_goods_cart" class="hide">
+			<div class="tip-box icon-box">
+				<span class="warn-icon m-icon"></span>
+				<div class="item-fore">
+					<h3 class="ftx-04">您的购物车中没有商品！</h3>
+				</div>
+			</div>
+		</div>
+
+		<div id="cart_address_not" class="hide">
+			<div class="tip-box icon-box">
+				<span class="warn-icon m-icon"></span>
+				<div class="item-fore">
+					<h3 class="ftx-04">您还没有选择收货地址！</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="new_address" class="pb" 
+	style="z-index:100003; width:800px; top:70px; left:50%; margin-left:-400px; display:none;">
+		<div class="cboxContent">
+			<div class="pb-hd" >
+				<a class="pb-x" onClick="closeAddressDialog()">✕</a><span class="pb-title">新增收货人地址</span>
+			</div>
+			<div class="pb-bd">
+				<div class="pb-ct">
+					<div class="user-form foreg-form">
+						<form action="" method="post" name="addressForm" id="addressForm" class="user-form">
+							<div class="form-row">
+								<div class="form-label">
+									<span class="red">*</span>收货人：
+								</div>
+								<div class="form-value">
+									<input type="text" class="form-input" value="" maxlength="20"
+										name="consigneeName" id="consigneeName">
+									<div class="form_prompt"></div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-label">
+									<span class="red">*</span>手机号码：
+								</div>
+								<div class="form-value">
+									<input type="text" class="form-input" maxlength="11"
+										name="mobilePhone" value="" id="mobilePhone"> <span
+										class="fl">固定电话：</span> <input type="text" class="form-input"
+										maxlength="20" value="" name="telephone" id="telephone">
+									<div class="form_prompt"></div>
+								</div>
+							</div>
+
+							<div class="form-row">
+								<div class="form-label form-label-lh">
+									<span class="red">*</span>所在地区：
+								</div>
+								<div id="regionSelect" class="form-value" ectype="regionLinkage">
+									<select name="province" id="province" class="province"></select>
+									<select name="city" id="city" class="city"></select>
+									<select name="area" id="area" class="area"></select>
+
+								</div>
+								<div style="color: red; line-height:40px;"></div>
+							</div>
+							<div class="form-row">
+								<div class="form-label">
+									<span class="red">*</span>详细地址：
+								</div>
+								<div class="form-value">
+									<input type="text" class="form-input form-input-long"
+										name="detail" value="" id="detail">
+									<div class="form_prompt"></div>
+								</div>
+							</div>
+
+							<input name="goods_flow_type" value="101" type="hidden">
+							<input name="address_id" value="" type="hidden">
+						</form>
+					</div>
+				</div>
+				<div class="tip-box icon-box">
+					<div class="pb-ft">
+						<a class="pb-btn pb-ok">保存收货人信息</a><a class="pb-btn pb-cl">取消</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{include file="common/footer"/}
+
+	<!--  
+	<script type="text/javascript" src="__index__/js/suggest.js"></script>
+	<script type="text/javascript" src="__index__/js/utils.js"></script>
+	<script type="text/javascript" src="__index__/js/warehouse.js"></script>
+	<script type="text/javascript" src="__index__/js/warehouse_area.js"></script>
+	<script type="text/javascript" src="__index__/js/jquery.SuperSlide.2.1.1.js"></script>
+	<script type="text/javascript" src="__index__/js/common.js"></script>
+	<script type="text/javascript" src="__index__/js/shopping_flow.js"></script>
+	<script type="text/javascript" src="__index__/js/jquery.nyroModal.js"></script>
+	<script type="text/javascript" src="__index__/js/perfect-scrollbar.min.js"></script>
+	<script type="text/javascript" src="__index__/js/lib_ecmobanFunc.js"></script>
+	<script type="text/javascript" src="__index__/js/jquery.purebox.js"></script>
+	<script type="text/javascript" src="__index__/js/region.js"></script>
+	-->
+	<script type="text/javascript" src="__index__/js/jquery.validation.min.js"></script>
+	<script src="__index__/js/jquery.cxselect.min.js"></script>
+
+	<script type="text/javascript">
+		$(function() {
+			initCxSelect();
+			validateAddressForm();
+			changeSelectedAddress();
+			changePayWay();
+			/*
+			$("#regionSelect>select").on('change', function() {
+				validateRegionSelect();
+			});
+			*/
+		});
+		
+		// 切换付款方式
+		function changePayWay() {
+			$(".payment-list>.p-radio-item").on('click', function() {
+				$(this).addClass("item-selected");
+				$(this).siblings(".item-selected").removeClass("item-selected");
+				$(this).find("input[name='payment']").prop("checked", true);
+			});
+		}
+		
+		// 切换选中的地址
+		function changeSelectedAddress() {
+			$("#consignee-addr .cs-w-item").on('click', function() {
+				$(this).addClass("cs-selected");
+				$(this).siblings(".cs-w-item").removeClass("cs-selected");
+				var sendAddr = "寄送至：" + $(this).find(".item-address").text().replace(/\s+/g, "");
+				$("#sendAddr").html(sendAddr);
+				
+				var sendMobile = "收货人：" + $(this).find(".username").text() + " " +
+							$(this).find(".contact").eq(0).text();
+				$("#sendMobile").html(sendMobile);
+			});
+		}
+		
+		// 初始化 省、市、区的选择框
+		function initCxSelect() {
+			$.cxSelect.defaults.url = '__index__/json/cityData.min.json';
+			//console.log($('#regionSelect'));
+			$('#regionSelect').cxSelect({
+				selects: ['province', 'city', 'area']
+			});
+		}
+		
+		// 删除一个地址
+		function deleteAddress(addressId, obj) { 
+			if (confirm('是否确认删除？')) {
+				$.ajax({
+					url: "{:url('order/deleteAddress')}",
+					type: "post",
+					data: {
+						addressId: addressId
+					},
+					success: function(res) {
+						if (res.status) {
+							$(obj).parents(".cs-w-item").remove();
+						} else {
+							alert(res.msg);
+						}
+					}
+				});
+			}
+		}
+		
+		// 修改收货地址
+		function updateAddress() {
+			
+		}
+		
+		// 新增新的收货地址
+		function saveAddress() {
+			var isOk1 = $("#addressForm").valid(); // 校验
+			var isOk2 = checkRegionSelect(); // 校验
+			
+			if (isOk1 && isOk2) {
+				$.ajax({
+					url: "{:url('order/updateAddress')}",
+					type: "post",
+					data: {
+						consigneeName: $("#consigneeName").val(),
+						mobilePhone: $("#mobilePhone").val(),
+						telephone: $("#telephone").val(),
+						province: $("#province").val(),
+						city: $("#city").val(),
+						area: $("#area").val(),
+						detail: $("#detail").val()
+					},
+					success: function(res) {
+						if (res.status) {
+							closeAddressDialog();
+							$("#consignee-addr .consignee-warp").prepend(res.data);
+						} else {
+							alert(res.msg);
+						}
+					}
+				});
+			}
+		}
+		
+		// 校验省、市、区是否完整
+		function checkRegionSelect() {
+			$selects = $("#regionSelect>select").not(":disabled");
+			//console.log($selects);
+			var isOk = true;
+			$selects.each(function() {
+				//console.log($(this).val());
+				if ($(this).val() == 0) {
+					isOk = false;
+				}
+			});			
+			$("#regionSelect").next().html(isOk ? '' : '地区信息不完整');
+			return isOk;
+		}
+
+		// 设置AddressForm的validate
+		function validateAddressForm() {
+			//console.log($("form[name='addressForm']"));
+			
+			$("#addressForm").validate({
+				ignore:".ignore",
+				rules: {
+					consigneeName:{
+						required : true,
+						maxlength: 16
+					}, 
+					mobilePhone: {
+						required : true,
+						isMobile : true
+					},
+					detail: {
+						required : true,
+						maxlength: 32
+					}
+				},
+				messages: {
+					consigneeName:{
+						required : '收货人姓名不能为空',
+						maxlength: '收货人姓名不能超过16个字符'
+					}, 
+					mobilePhone: {
+						required : '手机号不能为空',
+						isMobile : '手机号码格式错误'
+					},
+					detail: {
+						required : '详细地址不能为空',
+						maxlength: '详细地址不能超过32个字符'
+					}
+				}
+			});	
+		}
+		
+		function showAddressDialog(isAdd) { // flag=1 新增  flag=0 修改
+			$("#new_address .pb-title").html(isAdd ? "新增收货人地址" : "修改收货人地址");
+			$("#new_address a.pb-ok").on("click", isAdd ? saveAddress : updateAddress);
+			
+			// 回显数据
+			if (!isAdd) {
+				alert('暂不支持修改，请删除后再新增');
+			} else {
+				$("#new_address").show();
+			}
+		}
+		
+		function closeAddressDialog() {
+			$("#addressForm").find("input").val('');
+			$("#addressForm").find("select").val(0);
+			$("#addressForm").find("select:gt(0)").prop("disabled", "disabled");
+			$("#new_address").hide();
+		}
+	
+	</script>
+
+
+</body>
+</html>

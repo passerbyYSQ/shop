@@ -13,7 +13,7 @@ class Cart extends Controller {
     public function index() {
         // 未登录不允许操作
         if (empty(session('member'))) {
-            $this->error('请先登录');
+            $this->error('请先登录', 'member/login');
         }
         
         $model = new CartModel();

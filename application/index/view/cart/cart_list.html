@@ -135,7 +135,7 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 					<div class="cart-tbody" ectype="cartTboy">
 						<!-- 商品 -->
 						<div class="cart-item" ectype="shopItem">
-
+							<form id="cartForm" method="post" action="{:url('order/index')}" >
 							<div class="item-list" ectype="itemList">
 								{foreach $itemList as $item}
 								<!-- 商品1 开始 -->
@@ -145,7 +145,7 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 											<div class="cell s-checkbox">
 												<div class="cart-checkbox" ectype="ckList">
 													<input type="checkbox" value="{$item.cartId}" onChange="checkOne(this)" id="checkItem_{$item.cartId}"
-														name="checkItem" class="ui-checkbox" ectype="ckGoods">
+														name="checkItem[]" class="ui-checkbox" ectype="ckGoods">
 													<label for="checkItem_{$item.cartId}" class="ui-label-14">&nbsp;</label>
 												</div>
 											</div>
@@ -195,6 +195,7 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 								<!-- 商品1 结束 -->
 								{/foreach}
 							</div>
+							</form>
 						</div>
 
 						<!-- 商品结束 -->
@@ -221,16 +222,8 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 								<div class="toolbar-right">
 									<div class="comm-right">
 										<div class="btn-area">
-											<form name="formCart" method="post" action="flow.php"
-												onsubmit="return get_toCart();">
-												<input name="goPay" type="submit" class="submit-btn"
-													value="提交订单" id="go_pay" data-url="flow.php" /> <input
-													name="step" value="checkout" type="hidden" /> <input
-													name="store_seller" value="" type="hidden"
-													id="cart_store_seller" /> <input name="cart_value"
-													id="cart_value" value="" type="hidden" /> <input
-													name="goods_ru" id="goods_ru" value="" type="hidden" />
-											</form>
+											<input name="goPay" type="button" class="submit-btn"
+												value="提交订单" id="goPay" onClick="document:cartForm.submit()"/>
 										</div>
 										<div class="price-sum" id="total_desc">
 											<span class="txt">总价(不含运费)：</span> 
@@ -390,7 +383,7 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 			
 			// “全选”这个复选框的状态
 			var isSelectedAll = $("#cart-selectall").prop("checked");	
-			$items = $("input[name='checkItem']");
+			$items = $("input[name='checkItem[]']");
 			// 全部复选框选中
 			$items.prop("checked", isSelectedAll);
 			// 更改 已勾选复选框的数量
@@ -404,13 +397,13 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 			var isAllSelected = true;
 			// 当改变当前复选框的状态时，判断是否所有复选框状已经全部选中
 			// 如果是，改变“全选”这个复选框的状态
-			$("input[name='checkItem']").each(function() {
+			$("input[name='checkItem[]']").each(function() {
 				if (!$(this).prop("checked")) {
 					isAllSelected = false;
 				}
 			});
 			$("#cart-selectall").prop("checked", isAllSelected);
-			$("#selectedCount").html($("input[name='checkItem']:checked").length);
+			$("#selectedCount").html($("input[name='checkItem[]']:checked").length);
 			// 重新计算总价
 			calTotalCost();
 		}
@@ -420,7 +413,7 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 			var total = 0;
 			$("span[name='price']").each(function(index, element) {
 				// 判断是否勾选				
-				if ($("input[name='checkItem']").eq(index).prop("checked")) {
+				if ($("input[name='checkItem[]']").eq(index).prop("checked")) {
 					var price = parseFloat($(this).text()); // 单价，浮点数
 					// 注意不要用[]来取数组的某个元素，那样取出来是html代码，而并非jquery对象
 					var num = parseInt($("input[name='goodsNum']").eq(index).val()); // 数量，整数
@@ -446,20 +439,6 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 			}
 			$goodsNum.val(corrected);
 			
-			/* 
-			// 服务端更新后，页面才更新
-			
-			// 更新小计
-			$goodsItem = $(obj).parents(".item-single");
-			//console.log($goodsItem);
-			var price = parseFloat($goodsItem.find("span[name='price']").text());
-			$goodsItem.find("span[name='subtotal']").html( (price*corrected).toFixed(2) );
-			
-			// 如果当前商品勾选了。那么应该也更新总价
-			if ($goodsItem.find("input[name='checkItem']").prop("checked")) {
-				calTotalCost();
-			}
-			*/
 		}
 		
 		// 更新小计和总价
@@ -473,7 +452,7 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 			$goodsItem.find("span[name='subtotal']").html( (price*num).toFixed(2) );
 			
 			// 如果当前商品勾选了。那么应该也更新总价
-			if ($goodsItem.find("input[name='checkItem']").prop("checked")) {
+			if ($goodsItem.find("input[name='checkItem[]']").prop("checked")) {
 				calTotalCost(); // 更新总价
 			}
 		}
@@ -515,7 +494,7 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 							// 重新计算总价
 							calTotalCost();
 							// 更改 已勾选复选框的数量
-							$("#selectedCount").html($("input[name='checkItem']:checked").length);
+							$("#selectedCount").html($("input[name='checkItem[]']:checked").length);
 						} else {
 							alert(res.msg);
 						}
@@ -526,7 +505,7 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 		
 		function requestDeleteMore() {
 			if (confirm('是否确认删除购物车中勾选的商品？')) {
-				var cartIds = $("input[name='checkItem']:checked")
+				var cartIds = $("input[name='checkItem[]']:checked")
 									.map(function() {
 										return $(this).val()
 									}).get();
@@ -541,11 +520,11 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 					success: function(res) {
 						console.log(res);
 						if (res.status) {
-							$("input[name='checkItem']:checked").parents(".item-single").remove();
+							$("input[name='checkItem[]']:checked").parents(".item-single").remove();
 							// 重新计算总价
 							calTotalCost();
 							// 更改 已勾选复选框的数量
-							$("#selectedCount").html($("input[name='checkItem']:checked").length);
+							$("#selectedCount").html($("input[name='checkItem[]']:checked").length);
 						} else {
 							alert(res.msg);
 							window.location.reload();
