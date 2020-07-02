@@ -95,8 +95,7 @@
 		</div>
 	</div>
 	<div class="container">
-		<form action="flow.php" method="post" name="doneTheForm"
-			class="validator" id="theForm">
+		<form action="{:url('order/submit')}" method="post" name="doneTheForm" class="validator" id="theForm">
 			<div class="w w1200">
 				<div class="checkout-warp">
 
@@ -107,6 +106,7 @@
 								target="_blank">管理收货人地址</a>
 						</div>
 						<div class="ck-step-cont" id="consignee-addr">
+							<input type="hidden" name="addressId" />
 							<div class="consignee-warp">
 								{$allAddress}
 								<div class="cs-w-item">
@@ -134,19 +134,19 @@
 									<div class="p-radio-item payment-item  item-selected"
 										data-value='{"type":"cod","payid":"16","allow":""}'>
 										<span> <input type="radio" isCod="1" name="payment" checked
-											class="ui-radio" value="16" /> 支付宝支付
+											class="ui-radio" value="0" /> 支付宝支付
 										</span> <b></b>
 									</div>
 									<div class="p-radio-item payment-item"
 										data-value='{"type":"onlinepay","payid":"15","allow":""}'>
 										<span> <input type="radio"  isCod="0"
-											name="payment" class="ui-radio" value="15" /> 微信支付
+											name="payment" class="ui-radio" value="1" /> 微信支付
 										</span> <b></b>
 									</div>
 									<div class="p-radio-item payment-item"
 										data-value='{"type":"balance","payid":"11","allow":""}'>
 										<span> <input type="radio" isCod="0" name="payment"
-											class="ui-radio" value="11" />  货到付款
+											class="ui-radio" value="2" />  网上银行
 										</span> <b></b>
 									</div>
 								</div>
@@ -188,13 +188,13 @@
 											</div>
 										</div>
 										<div class="ck-goods-cont">
+											{assign name="sum" value="0" /}
 											{foreach $items as $item}
+											{assign name="sum" value="$sum + $item.salePrice * $item.count" /}
 											<div class="cg-item last">
 												<div class="c-col cg-name">
-													<input name="cart_info[]" type="hidden"
-														value="0|45_789_2_0"> <a
-														href="http://mall.wygk.cn/goods.php?id=789"
-														target="_blank">
+													<input name="cartIds[]" type="hidden" value="{$item.cartId}"> 
+														<a href="{:url('goods/index')}?id={$item.goodsId}" target="_blank">
 														<div class="p-img">
 															<img src="__public__/{$item.mainPic}" width="48" height="48">
 														</div>
@@ -218,6 +218,7 @@
 												<i class="dian"></i>
 											</div>
 											{/foreach}
+										
 										</div>
 									</div>
 								</div>
@@ -240,10 +241,10 @@
 						<div class="statistic">
 							<div class="list">
 								<span><em>1</em> 件商品，总商品金额：</span> <em class="price"
-									id="warePriceId"><em>¥</em>79.00</em>
+									id="warePriceId"><em>¥</em>{$sum}</em>
 							</div>
 							<div class="list">
-								<span>应付总额：</span> <em class="price-total"><em>¥</em>79.00</em>
+								<span>应付总额：</span> <em class="price-total"><em>¥</em>{$sum}</em>
 							</div>
 						</div>
 					</div>
@@ -251,7 +252,7 @@
 					<div class="checkout-foot" ectype="tfoot-toolbar">
 						<div class="w w1200">
 							<div class="btn-area">
-								<input type="button" id="submit-done" class="submit-btn"
+								<input type="submit" id="submit-done" class="submit-btn"
 									value="提交订单">
 							</div>
 							<div class="d-address">
@@ -259,16 +260,6 @@
 									id="sendMobile">收货人：小明&nbsp;&nbsp;18575784345</span>
 							</div>
 						</div>
-						<input name="goods_flow_type" value="101" type="hidden"> <input
-							name="rec_number_str" value="" type="hidden"> <input
-							name="shipping_prompt_str" value="" type="hidden"> <input
-							type="hidden" id="store_id" name='store_id' value="0" /> <input
-							type="hidden" id="store_seller" value="" name="store_seller">
-						<input type="hidden" value="3" name="warehouse_id"> <input
-							type="hidden" value="30" name="area_id"> <input
-							name="sc_guid" value="F11EBDD6-C44A-4FAD-9862-BCED6F5103EC"
-							type="hidden" autocomplete="off"> <input name="sc_rand"
-							value="3962" type="hidden" autocomplete="off">
 					</div>
 
 				</div>
@@ -432,7 +423,8 @@
 				</div>
 				<div class="tip-box icon-box">
 					<div class="pb-ft">
-						<a class="pb-btn pb-ok">保存收货人信息</a><a class="pb-btn pb-cl">取消</a>
+						<a class="pb-btn pb-ok" href="javascript:void(0)" onClick="saveAddress()">保存收货人信息</a>
+						<a class="pb-btn pb-cl">取消</a>
 					</div>
 				</div>
 			</div>
@@ -462,13 +454,9 @@
 		$(function() {
 			initCxSelect();
 			validateAddressForm();
-			changeSelectedAddress();
 			changePayWay();
-			/*
-			$("#regionSelect>select").on('change', function() {
-				validateRegionSelect();
-			});
-			*/
+			// 模拟点击，选中第一个地址
+			$("#consignee-addr div.cs-w-item:first").click();
 		});
 		
 		// 切换付款方式
@@ -481,17 +469,17 @@
 		}
 		
 		// 切换选中的地址
-		function changeSelectedAddress() {
-			$("#consignee-addr .cs-w-item").on('click', function() {
-				$(this).addClass("cs-selected");
-				$(this).siblings(".cs-w-item").removeClass("cs-selected");
-				var sendAddr = "寄送至：" + $(this).find(".item-address").text().replace(/\s+/g, "");
-				$("#sendAddr").html(sendAddr);
-				
-				var sendMobile = "收货人：" + $(this).find(".username").text() + " " +
-							$(this).find(".contact").eq(0).text();
-				$("#sendMobile").html(sendMobile);
-			});
+		function selectAddress(obj, addressId) {
+			$(obj).addClass("cs-selected");
+			$(obj).siblings(".cs-w-item").removeClass("cs-selected");
+			$("input[name='addressId']").val(addressId);
+			
+			var sendAddr = "寄送至：" + $(obj).find(".item-address").text().replace(/\s+/g, "");
+			$("#sendAddr").html(sendAddr);
+			
+			var sendMobile = "收货人：" + $(obj).find(".username").text() + " " +
+						$(obj).find(".contact").eq(0).text();
+			$("#sendMobile").html(sendMobile);
 		}
 		
 		// 初始化 省、市、区的选择框
@@ -535,7 +523,7 @@
 			
 			if (isOk1 && isOk2) {
 				$.ajax({
-					url: "{:url('order/updateAddress')}",
+					url: "{:url('order/addAddress')}",
 					type: "post",
 					data: {
 						consigneeName: $("#consigneeName").val(),
@@ -610,9 +598,10 @@
 			});	
 		}
 		
-		function showAddressDialog(isAdd) { // flag=1 新增  flag=0 修改
-			$("#new_address .pb-title").html(isAdd ? "新增收货人地址" : "修改收货人地址");
-			$("#new_address a.pb-ok").on("click", isAdd ? saveAddress : updateAddress);
+		
+		function showAddressDialog(isAdd) { 
+			//$("#new_address .pb-title").html(isAdd ? "新增收货人地址" : "修改收货人地址");
+			//$("#new_address a.pb-ok").on("click", isAdd ? saveAddress : updateAddress);
 			
 			// 回显数据
 			if (!isAdd) {
@@ -621,6 +610,7 @@
 				$("#new_address").show();
 			}
 		}
+		
 		
 		function closeAddressDialog() {
 			$("#addressForm").find("input").val('');

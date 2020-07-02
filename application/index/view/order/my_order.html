@@ -1,0 +1,388 @@
+
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>用户中心_我的订单</title>
+
+
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="stylesheet" type="text/css" href="__index__/css/base.css" />
+<link rel="stylesheet" type="text/css" href="__index__/css/style.css" />
+<link rel="stylesheet" type="text/css" href="__index__/css/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="__index__/css/purebox.css" />
+<link rel="stylesheet" type="text/css"
+	href="__index__/css/quickLinks.css" />
+
+<script type="text/javascript" src="__index__/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="__index__/js/jquery.json.js"></script>
+<script type="text/javascript" src="__index__/js/transport_jquery.js"></script>
+<script type="text/javascript">
+	//加载效果
+	var load_cart_info = '<img src="__index__/img/load/loadGoods.gif" class="load" />';
+	var load_icon = '<img src="__index__/img/load/load.gif" width="200" height="200" />';
+</script>
+<link rel="stylesheet" type="text/css" href="__index__/css/user.css">
+<link rel="stylesheet" type="text/css"
+	href="__index__/css/perfect-scrollbar.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="__index__/css/calendar.min.css" />
+</head>
+
+<body>
+	{include file="common/top" /}
+
+	<div class="user-content clearfix">
+		<div class="user-side" ectype="userSide">
+			<div class="user-perinfo-ny">
+				<div class="profile clearfix">
+					<div class="avatar">
+						<a href="user.php" class="u-pic"> <img
+							src="__index__/img/touxiang.jpg" alt="">
+						</a>
+					</div>
+					<div class="name">
+						<h2>73742676-676636</h2>
+
+					</div>
+				</div>
+			</div>
+			<div class="user-mod">
+
+				<div class="side-menu">
+					<dl>
+						<dt>
+							<i class="square"></i><span>订单中心</span>
+						</dt>
+						<dd>
+							<p class="current">
+								<a href="user.php?act=order_list" target="_self">我的订单</a>
+							</p>
+							<p>
+								<a href="user.php?act=address_list" target="_self">收货地址</a>
+							</p>
+							<p>
+								<a href="user.php?act=booking_list" target="_self">缺货登记</a>
+							</p>
+							<p>
+								<a href="user.php?act=return_list" target="_self">退换货订单</a>
+							</p>
+						</dd>
+					</dl>
+					<dl>
+						<dt>
+							<i class="square"></i><span>会员中心</span>
+						</dt>
+						<dd>
+							<p>
+								<a href="user.php?act=profile" target="_self">用户信息</a>
+							</p>
+							<p>
+								<a href="user.php?act=account_safe" target="_self">账户安全</a>
+							</p>
+							<p>
+								<a href="user.php?act=account_bind" target="_self">账号绑定</a>
+							</p>
+							<p>
+								<a href="user.php?act=crowdfunding" target="_self">我的众筹</a>
+							</p>
+							<p>
+								<a href="user.php?act=collection_list" target="_self">收藏/关注</a>
+							</p>
+							<!--        <p><a href="user.php?act=focus_brand" target="_self">关注品牌</a></p>-->
+							<p>
+								<a href="user.php?act=message_list" target="_self">我的留言</a>
+							</p>
+							<p>
+								<a href="user.php?act=affiliate" target="_self">我的推荐</a>
+							</p>
+							<p>
+								<a href="user.php?act=comment_list" target="_self">评论/晒单</a>
+							</p>
+							<p>
+								<a href="user.php?act=take_list"> 我的提货</a>
+							</p>
+							<p>
+								<a href="user.php?act=complaint_list"> 交易纠纷</a>
+							</p>
+							<p>
+								<a href="user.php?act=invoice"> 我的发票</a>
+							</p>
+							<p>
+								<a href="user.php?act=illegal_report"> 违规举报</a>
+							</p>
+						</dd>
+					</dl>
+					<dl>
+						<dt>
+							<i class="square"></i><span>账户中心</span>
+						</dt>
+						<dd>
+							<p>
+								<a href="user.php?act=bonus" target="_self">我的红包</a>
+							</p>
+							<p>
+								<a href="user.php?act=value_card" target="_self">我的储值卡</a>
+							</p>
+							<p>
+								<a href="user.php?act=coupons" target="_self">我的优惠券</a>
+							</p>
+							<p>
+								<a href="user.php?act=track_packages" target="_self">跟踪包裹</a>
+							</p>
+							<p>
+								<a href="user.php?act=account_log" target="_self">资金管理</a>
+							</p>
+							<p>
+								<a href="user.php?act=baitiao" target="_self">我的白条</a>
+							</p>
+						</dd>
+					</dl>
+					<dl>
+						<dt>
+							<i class="square"></i><span>活动中心</span>
+						</dt>
+						<dd>
+							<p>
+								<a href="user.php?act=auction_list" target="_self">拍卖活动</a>
+							</p>
+							<p>
+								<a href="user.php?act=snatch_list" target="_self">夺宝奇兵</a>
+							</p>
+						</dd>
+					</dl>
+					<dl>
+						<dt>
+							<i class="square"></i><span>批发中心</span>
+						</dt>
+						<dd>
+							<p>
+								<a href="user.php?act=wholesale_buy" target="_self">我的采购单</a>
+							</p>
+							<p>
+								<a href="user.php?act=wholesale_purchase" target="_self">我的求购单</a>
+							</p>
+						</dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+		<div class="user-main" ectype="userMain" data-action="noDefault">
+			<div class="user-crumbs hide">
+				<span><a href=".">首页</a></span><span class="arrow">></span> <span
+					class="finish">用户中心</span>
+			</div>
+			<div class="user-mod">
+				<form id="myOrderForm" method="post" action="{:url('order/myorder')}">
+				<div class="user-title">
+					<h2>我的订单</h2>
+					<input name="status" type="hidden" value="{$cond['status']}" />
+					<ul class="tabs">
+						
+						<li {eq name="$cond['status']" value=""}class="active"{/eq} onClick="changeStatus('')">
+							<a href="javascript:void(0);">全部</a> 
+						</li>
+						<li {eq name="$cond['status']" value="0"}class="active"{/eq} class="user-count3 " onClick="changeStatus(0)">
+							<a href="javascript:void(0);">未付款</a> 
+							
+						</li>
+						<li {eq name="$cond['status']" value="1"}class="active"{/eq} class="user-count1 " onclick="changeStatus(1)">
+							<a href="javascript:void(0);">未发货</a> 
+							
+						</li>
+						<li {eq name="$cond['status']" value="2"}class="active"{/eq} class="user-count2 " onclick="changeStatus(2)">
+							<a href="javascript:void(0);">未收货</a> 
+							
+						</li>
+						<li {eq name="$cond['status']" value="3"}class="active"{/eq} class="user-count4 " onclick="changeStatus(3)">
+							<a href="javascript:void(0);">未评价</a> 
+							
+						</li>
+						<li {eq name="$cond['status']" value="4"}class="active"{/eq} class="user-count4 " onclick="changeStatus(4)">
+							<a href="javascript:void(0);">已完成</a> 
+						</li>
+					</ul>
+					
+				</div>
+				<div class="user-list-title clearfix">
+					<input name="period" type="hidden" value="{$cond['period']}" >
+					<div class="user-list-filter">
+						<div id="dateTime" class="imitate_select w120">
+							<div class="cite">
+								<span>全部时间</span><i class="iconfont icon-down"></i>
+							</div>
+							
+							<ul>
+								<li data-period=""
+								onclick="changePeriod('')"><a href="javascript:void(0);">全部时间</a></li>
+								
+								<li data-period="today"
+								onclick="changePeriod('today')"><a href="javascript:void(0);">今天</a></li>
+								
+								<li data-period="week"
+								onclick="changePeriod('week')"><a href="javascript:void(0);">本周</a></li>
+								
+								<li data-period="month"
+								onclick="changePeriod('month')"><a href="javascript:void(0);">本月</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="user-list-search">
+						<input type="text" id="ip_keyword" class="text" value="{$cond['orderId']}"
+							placeholder="订单号搜索" name="orderId" style="color: #999;" />
+						<button type="button"
+							onclick="$('#myOrderForm').submit();">
+							<i class="iconfont icon-search"></i>
+						</button>
+					</div>
+					</form>
+				</div>
+				<div id="user_order_list">
+					<div class="user-order-list user-order-list-special">
+						{foreach $orderList as $order}
+						<dl class="item">
+							<dt class="item-t item-t-qb">
+								<div class="t-statu">
+									<div class="t-statu-name" id="ss_received_19">
+										{switch name="$order[0]['status']"}
+										{case value="0"}未付款{/case}
+										{case value="1"}已付款，等待发货{/case}
+										{case value="2"}已发货，等待确认收货{/case}
+										{case value="3"}已确认收货，未评价{/case}
+										{/switch}
+									</div>
+								</div>
+								<div class="t-info">
+									<span class="info-item">订单号：{$order[0]['orderId']}</span> 
+									<span class="info-item">下单时间：{$order[0]['createTime']}</span> 
+									<span class="info-item">支付方式：
+										{switch name="$order[0]['payMethod']"}
+										{case value="0"}支付宝支付{/case}
+										{case value="1"}微信支付{/case}
+										{default /}网上银行{/case}
+										{/switch}
+									</span>
+								</div>
+								<div class="t-info">
+									<span class="info-item">收货人：{$order[0]['consigneeName']}</span> 
+									<span class="info-item">手机号：{$order[0]['mobilePhone']}</span>
+									<span class="info-item">收货地址：{$order[0]['province']} {$order[0]['city']} {$order[0]['area']} &nbsp;&nbsp;{$order[0]['detail']}</span> 
+								</div>
+								<div class="t-price">
+									<em>¥</em>{$order[0]['totalPay']}
+								</div>
+							</dt>
+							<dd class="item-c">
+								<div class="c-left">
+									{foreach $order[1] as $item}
+									<div class="c-goods" ectype="c-goods">
+										<div class="c-img">
+											<a href="{:url('goods/index')}?id={$item.goodsId}"><img src="__public__/{$item['mainPic']}" alt=""></a>
+										</div>
+										<div class="c-info">
+											<div class="o-info-lm">
+												<a href="{:url('goods/index')}?id={$item.goodsId}"
+													class="info-name" target="_blank"
+													title="{$item.goodsName}">{$item.goodsName}</a>
+											</div>
+											<div class="fl">
+												<div class="info-price mr10" style="width: auto;">
+													<b><em>¥</em>{$item.salePrice}</b><i>×</i><span>{$item.count}</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									{/foreach}
+								</div>
+								<div class="c-outhr">
+									<span class="info-item"><a
+										href="http://mall.wygk.cn/merchants_store.php?merchant_id=9"
+										class="user-shop-link">美宝莲</a> <a id="IM"
+										onclick="openWin(this)" href="javascript:;" ru_id="9"
+										class="iconfont icon-kefu user-shop-kefu"></a> </span>
+
+								</div>
+								<div class="c-handle" id="ss_msg_19">
+									{switch name="$order[0]['status']"}
+									{case value="0"}
+										<a onClick="return confirm('是否确认全额支付该订单？');" href="{:url('order/pay')}?orderId={$order[0]['orderId']}" class="sc-btn">支付订单</a>
+										<a onClick="return confirm('是否删除该订单？');" href="{:url('order/delete')}?orderId={$order[0]['orderId']}" class="sc-btn">删除订单</a>
+									{/case}
+									{case value="2"}
+										<a href="" class="sc-btn">确认收货</a>
+									{/case}
+									{case value="3"}
+										<a href="" class="sc-btn">评价</a>
+									{/case}
+									{/switch}
+								</div>
+							</dd>
+						</dl>
+						{/foreach}
+					</div>
+
+					<div class="pages pages_warp">
+						{$pageHtml}
+					</div>
+
+					<script type="text/javascript" src="__index__/js/jquery.yomi.js"></script>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{include file="common/footer" /}
+
+	<script type="text/javascript" src="__index__/js/utils.js"></script>
+	<script type="text/javascript" src="__index__/js/jquery.SuperSlide.2.1.1.js"></script>
+	<script type="text/javascript" src="__index__/js/common.js"></script>
+	<script type="text/javascript" src="__index__/js/jquery.validation.min.js"></script>
+	<script type="text/javascript" src="__index__/js/jquery.nyroModal.js"></script>
+	<script type="text/javascript"
+		src="__index__/js/perfect-scrollbar.min.js"></script>
+	<script type="text/javascript" src="__index__/js/calendar.js"></script>
+	<script type="text/javascript" src="__index__/js/plupload.full.min.js"></script>
+	<script type="text/javascript" src="__index__/js/lib_ecmobanFunc.js"></script>
+	<script type="text/javascript" src="__index__/js/user.js"></script>
+	<script type="text/javascript" src="__index__/js/jquery.picTip.js"></script>
+	<script type="text/javascript"
+		src="__index__/js/jquery.purebox.js"></script>
+	<script type="text/javascript"
+		src="__index__/js/dsc-common.js"></script>
+
+	<script type="text/javascript">
+		function changeStatus(newStatus) {
+			$("input[name='status']").val(newStatus);
+			$("#myOrderForm").submit();
+		}
+		
+		function changePeriod(newPeriod) {
+			$("input[name='period']").val(newPeriod);
+			$("#myOrderForm").submit();
+		}
+		
+		$(function() {
+			$("#dateTime li").each(function() {
+				//console.log($(this).attr('data-period'));
+				if ($(this).attr('data-period') == '{$cond['period']}') {
+					$("#dateTime>.cite>span").html($(this).text());
+				}
+			});
+			/*
+			//tab切换
+			$("*[ectype='tabSection']").slide({
+				titCell : "*[ectype='tabs'] li",
+				mainCell : "*[ectype='tabContent']",
+				trigger : "click",
+				titOnClassName : "active"
+			});
+
+			//查看图片
+			$(".nyroModal").nyroModal();
+			*/
+		});
+	</script>
+
+</body>
+</html>

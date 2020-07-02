@@ -1,15 +1,202 @@
 <?php
 namespace app\index\controller;
 use think\Controller;
+use think\Db;
 use app\index\model\Cart as CartModel;
 use app\index\model\Order as OrderModel;
+use app\index\model\OrderItem as OrderItemModel;
 use app\index\model\Address as AddressModel;
+use think\Exception;
 
 /**
  * @author passerbyYSQ
  * @create 2020年6月21日 下午10:12:19
  */
 class Order extends Controller {
+    // 删除订单
+    public function delete() {
+        if (empty(session('member'))) {
+            $this->error('请先登录');
+        }
+        
+        $orderId = input('get.orderId');
+        $order = OrderModel::get( // 未支付的订单才可以删除
+            ['id'=>$orderId, 'memberId'=>session('member.id'), 'status'=>0]); 
+        if (empty($order)) {
+            $this->error('订单号错误或无权限操作');
+        }
+        
+        $items = OrderItemModel::where('orderId', $order->id)->select();
+        Db::startTrans();
+        try{
+            foreach ($items as $item) {
+                $item->delete();
+            }
+            
+            $order->delete();
+            // 提交事务
+            Db::commit();
+            $this->success('删除订单成功');
+        } catch (Exception $e) {
+            // 回滚事务
+            Db::rollback();
+            $this->error('删除订单失败');
+        }
+    }
+    
+    // 支付订单
+    public function pay() {
+        if (empty(session('member'))) {
+            $this->error('请先登录');
+        }
+        
+        $orderId = input('get.orderId');
+        $order = OrderModel::get(['id'=>$orderId, 'memberId'=>session('member.id')]);
+        if (empty($order)) {
+            $this->error('订单号错误或无权限操作');
+        }
+        
+        $order->status = 1;
+        $order->save();
+        $this->success('支付成功');
+    }
+    
+    public function myorder() {
+        //var_dump(input());exit();
+        
+        if(empty(session('member'))){
+            //$this->error('请先登录!','login/index');
+            return '请先登录';
+        }
+        
+        $status = input('status', '');
+        $cond['status'] = $status;
+        $period = input('period', '');
+        $cond['period'] = $period;
+        $orderId = input('orderId', '');
+        $cond['orderId'] = $orderId;
+        
+        $orderModel = new OrderModel();
+        $paginator = $orderModel
+            ->allOrderIds(session('member.id'), $status, $period, $orderId, input());
+        $orderIds = $paginator->items();
+        $pageHtml = $paginator->render();
+        
+        $itemModel = new OrderItemModel();
+        $res = array();
+        foreach ($orderIds as $orderId) {
+            $id = $orderId['id'];
+            $orderDetail = $orderModel->orderDetail($id);
+            $itemList = $itemModel->allOrderItems($id);
+            
+            $res[$id] = array($orderDetail, $itemList);
+        }
+        
+        $this->assign('orderList', $res);
+        $this->assign('pageHtml', $pageHtml);
+        $this->assign('cond', $cond);
+        return $this->fetch('my_order');
+        
+    }
+    
+    public function test() {
+        //var_dump(empty(0));
+    }
+    
+    // 提交订单
+    public function submit() {
+        //var_dump(input('post.'));
+        
+        if (empty(session('member'))) {
+            $this->error('请先登录');
+        }
+        
+        $addressId = input('post.addressId');
+        $payMethod = input('post.payment');
+        $cartIds = input('post.cartIds/a');
+
+        $address = AddressModel::get(
+            ['id'=>$addressId, 'memberId'=>session('member.id')]);
+        if (empty($address)) {
+            $this->error('收货地址不存在');
+        }
+        
+        if ($payMethod != 0 || $payMethod != 1 || $payMethod != 2) {
+            $payMethod = 0;
+        }
+        
+        //$cartModel = new CartModel();
+        
+        $flag = true;
+        $orderId = $this->produceOrderId();
+        $totalPay = 0;
+        //var_dump('111');
+        // 启动事务
+        Db::startTrans();
+        try{
+            
+            foreach ($cartIds as $cartId) {
+                $cartModel = new CartModel();
+                // 注意返回的是一个数组，而并非对象
+                $cartItem = $cartModel->findOneNeedPrice($cartId, session('member.id'));
+                //var_dump($cartItem);
+                if (empty($cartItem)) {
+                    $flag = false;
+                    break;
+                }
+                
+                $orderItem = new OrderItemModel();
+                //var_dump($orderItem);
+                
+                $orderItem->goodsId = $cartItem['goodsId'];
+                $orderItem->orderId = $orderId; 
+                $orderItem->count = $cartItem['count'];
+                $orderItem->memberId = session('member.id');
+                $orderItem->save();
+                
+                $totalPay += ($cartItem['count'] * $cartItem['salePrice']);
+                
+                // 删除购物车
+                //$cartItem->delete();
+                CartModel::destroy($cartItem['id']);
+                
+            }
+            
+            if ($flag) {
+                // 插入订单
+                $order = new OrderModel();
+                $order->id = $orderId;
+                $order->createTime = date('Y-m-d H:i:s');
+                $order->postscript = input('post.postscript');
+                $order->totalPay = $totalPay;
+                $order->payMethod = $payMethod;
+                $order->addressId = $address->id;
+                $order->status = 0; // 未付款
+                $order->memberId = session('member.id'); // 未付款
+                $order->save();
+                
+                // 提交事务
+                Db::commit();
+                
+                $this->success('下单成功，请前往付款', 'cart/index');
+            } else {
+                // 回滚事务
+                Db::rollback();
+                $this->error('购物车无该商品，请勿重复下单！');
+            }
+        } catch (Exception $e) {
+            // 回滚事务
+            Db::rollback();
+            $this->error('提交订单失败');
+        }
+        
+    }
+    
+    // 生成订单号
+    public function produceOrderId() {
+        $orderId = date('YmdHis') . sprintf("%04d", random_int(0, 999999));
+        return $orderId;
+    }
     
     public function index() {
         //var_dump(input('post.'));exit();
@@ -98,7 +285,7 @@ class Order extends Controller {
     function addressHtml($consigneeName, $mobilePhone, $telephone, 
         $province, $city, $area, $detail, $addressId) {
         $html = "
-<div class=cs-w-item>
+<div class=cs-w-item onClick='selectAddress(this, {$addressId})'>
    <div class=item-tit><h3 class=username>{$consigneeName}</h3></div>
    <div class=item-tel>
       <span class=contact>{$mobilePhone}</span>

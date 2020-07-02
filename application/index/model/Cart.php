@@ -7,6 +7,22 @@ use think\Model;
  */
 class Cart extends Model {
     
+    public function goods() {
+        //return $this->belongsTo('goods', 'goodsId');
+        return '模型关联';
+    }
+    
+    // 需要计算费用小计
+    public function findOneNeedPrice($cartId, $memberId) {
+        return db('cart')
+        ->alias('c')
+        ->join('goods g', 'c.goodsId=g.id')
+        ->where(['c.id'=>$cartId, 'c.memberId'=>$memberId])
+        // last：商品库存
+        ->field('c.*, g.salePrice')
+        ->find();
+    }
+    
     public function selectByIds($cartIds) {
         return db('cart')
         ->alias('c')
