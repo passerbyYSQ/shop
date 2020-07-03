@@ -19,7 +19,7 @@ class Order extends Model {
             $query = $query->whereTime('createTime', $period);
         }
         if ($orderId != '') {
-            $query = $query->where('id', $orderId);
+            $query = $query->where('id', 'like', '%'.$orderId.'%');
         }
         $paginator = $query->field('id')->order('createTime desc')
                 ->paginate($count, false, 

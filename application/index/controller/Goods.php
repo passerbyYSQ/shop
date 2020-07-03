@@ -3,6 +3,7 @@ namespace app\index\controller;
 use think\Controller;
 use app\index\model\Category as CategoryModel;
 use app\index\model\Goods as GoodsModel;
+use app\index\model\Cart;
 
 class Goods extends Controller
 {
@@ -15,6 +16,7 @@ class Goods extends Controller
         } 
         
         $this->assign('goods', $goods);
+        
         return $this->fetch('goods');
     }
     
@@ -40,9 +42,10 @@ class Goods extends Controller
         $conds['sort'] = explode(' ', $conds['sort']);
         
         //var_dump($conds);exit();
+        $cartItemsCount = Cart::count();
         
         $this->assign('conds', $conds);
-        
+        $this->assign('cartItemsCount', $cartItemsCount);
         return $this->fetch();
     }
 }

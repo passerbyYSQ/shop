@@ -19,8 +19,10 @@ class Cart extends Controller {
         $model = new CartModel();
         //var_dump(session('member'));exit();
         $itemList = $model->list(session('member.id'));
+        $itemCount = CartModel::count();
         
         $this->assign('itemList', $itemList);
+        $this->assign('itemCount', $itemCount);
         return $this->fetch('cart_list');
     }
     

@@ -13,6 +13,23 @@ use think\Exception;
  * @create 2020年6月21日 下午10:12:19
  */
 class Order extends Controller {
+    public function receive() {
+        if (empty(session('member'))) {
+            $this->error('请先登录');
+        }
+        
+        $orderId = input('get.orderId');
+        $order = OrderModel::get( // 已发货的订单才可以确认收货
+            ['id'=>$orderId, 'memberId'=>session('member.id'), 'status'=>2]);
+        if (empty($order)) {
+            $this->error('订单号错误或无权限操作');
+        }
+        
+        $order->status = 3; // 未评价
+        $order->save();
+        $this->success('确认收货成功');
+    }
+    
     // 删除订单
     public function delete() {
         if (empty(session('member'))) {
@@ -65,8 +82,8 @@ class Order extends Controller {
         //var_dump(input());exit();
         
         if(empty(session('member'))){
-            //$this->error('请先登录!','login/index');
-            return '请先登录';
+            $this->error('请先登录!','member/login');
+            //return '请先登录';
         }
         
         $status = input('status', '');
@@ -92,9 +109,11 @@ class Order extends Controller {
             $res[$id] = array($orderDetail, $itemList);
         }
         
+        
         $this->assign('orderList', $res);
         $this->assign('pageHtml', $pageHtml);
         $this->assign('cond', $cond);
+        $this->assign('cartItemsCount', CartModel::count());
         return $this->fetch('my_order');
         
     }

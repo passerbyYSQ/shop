@@ -42,8 +42,8 @@
 						</a>
 					</div>
 					<div class="name">
-						<h2>73742676-676636</h2>
-
+						<h2>{$Think.session.member.memberName}</h2>
+						<h3>{$Think.session.member.phone}</h3>
 					</div>
 				</div>
 			</div>
@@ -309,10 +309,10 @@
 										<a onClick="return confirm('是否删除该订单？');" href="{:url('order/delete')}?orderId={$order[0]['orderId']}" class="sc-btn">删除订单</a>
 									{/case}
 									{case value="2"}
-										<a href="" class="sc-btn">确认收货</a>
+										<a onClick="return confirm('是否收货？');" href="{:url('order/receive')}?orderId={$order[0]['orderId']}" class="sc-btn">确认收货</a>
 									{/case}
 									{case value="3"}
-										<a href="" class="sc-btn">评价</a>
+										<a href="#" class="sc-btn">评价</a>
 									{/case}
 									{/switch}
 								</div>

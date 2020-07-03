@@ -45,6 +45,21 @@
             </ul>
         </li>
         
+        <li {eq name="menu" value="order"}class="open"{/eq}>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-desktop"></i>
+                <span class="menu-text"> 订单管理 </span>
+                <i class="menu-expand"></i>
+            </a>
+            <ul class="submenu">
+                <li {eq name="submenu" value="list"}class="active"{/eq}>
+                    <a href="{:url('order/list')}" class="menu-dropdown">
+                        <span class="menu-text">发货</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        
     </ul>
     <!-- /Sidebar Menu -->
 </div>

@@ -17,7 +17,7 @@
 		<ul class="quick-menu fr">
 			<li>
 				<div class="dt">
-					<a href="#">我的订单</a>
+					<a href="{:url('order/myorder')}">我的订单</a>
 				</div>
 			</li>
 			<li class="spacer"></li>
@@ -54,7 +54,7 @@
 					action="search.php" onSubmit="return checkSearchForm()"
 					class="search-form">
 					<input autocomplete="off" onKeyUp="lookup(this.value);"
-						name="keywords" type="text" id="keyword" value="内衣"
+						name="keywords" type="text" id="keyword" placeholder="内衣"
 						class="search-text" /> <input type="hidden"
 						name="store_search_cmt" value="0">
 					<button type="submit" class="button button-goods"
