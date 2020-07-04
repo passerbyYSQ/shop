@@ -61,7 +61,7 @@ class Order extends Controller {
         }
     }
     
-    // 支付订单
+    // 支付订单。不要忘了修改出售数量！！！！！
     public function pay() {
         if (empty(session('member'))) {
             $this->error('请先登录');
@@ -133,11 +133,11 @@ class Order extends Controller {
         $addressId = input('post.addressId');
         $payMethod = input('post.payment');
         $cartIds = input('post.cartIds/a');
-
+        
         $address = AddressModel::get(
             ['id'=>$addressId, 'memberId'=>session('member.id')]);
         if (empty($address)) {
-            $this->error('收货地址不存在');
+            $this->error('收货地址不存在', 'order/index');
         }
         
         if ($payMethod != 0 || $payMethod != 1 || $payMethod != 2) {
@@ -197,7 +197,7 @@ class Order extends Controller {
                 // 提交事务
                 Db::commit();
                 
-                $this->success('下单成功，请前往付款', 'cart/index');
+                $this->success('下单成功，请前往付款', 'cart/myorder');
             } else {
                 // 回滚事务
                 Db::rollback();
@@ -218,8 +218,12 @@ class Order extends Controller {
     }
     
     public function index() {
+        
         //var_dump(input('post.'));exit();
         $cartIds = input('post.checkItem/a');
+        if (empty($cartIds)) {
+            $this->error('请选择购物车中的商品');
+        }
         //var_dump($cartIds);exit();
         
         $cartModel = new CartModel();

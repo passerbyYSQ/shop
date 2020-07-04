@@ -3,9 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="Keywords" content="童攀课堂-php课堂-www.tongpankt.com" />
-<meta name="Description" content="童攀课堂-php课堂-www.tongpankt.com" />
-<title>商品名称</title>
+<title>商品详情 - {$goods.goodsName}</title>
 <link rel="shortcut icon" href="favicon.ico" />
 
 <link rel="stylesheet" type="text/css" href="__index__/css/base.css" />
@@ -82,7 +80,7 @@
 											</div>
 											<div class="qrcode_pop">
 												<div class="mobile-qrcode">
-													<img src="__index__/img/weixin_code_799.png" alt="商品二维码"
+													<img src="__root__/passerby.jpg" alt="商品二维码"
 														title="" width="175">
 												</div>
 											</div>
@@ -213,13 +211,13 @@
 							<div class="goods-para-list">
 								<dl class="goods-para">
 									<dd class="column">
-										<span>{$goods.goodsName}</span>
+										<span><b>商品名</b>：{$goods.goodsName}</span>
 									</dd>
 									<dd class="column">
-										<span>所属分类：{$goods.cateName}</span>
+										<span><b>所属分类</b>：{$goods.cateName}</span>
 									</dd>
 									<dd class="column">
-										<span>上架时间：{$goods.onSaleTime}</span>
+										<span><b>上架时间</b>：{$goods.onSaleTime}</span>
 									</dd>
 								</dl>
 

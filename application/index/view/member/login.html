@@ -3,21 +3,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="Keywords"
-	content="大商创 免费商城系统 免费B2B2C 免费多商户系统  多店铺商城系统 企业级电商系统  ecsho" />
-<meta name="Description"
-	content="大商创是由商创网络（模板堂）推出的免费B2B2C商城系统，支持多店铺入驻，包含多城市多仓库等众多功能，能帮助企业及个人快速搭建多商户电商系统，并减少二次开发带来的成本" />
-
-<title>用户中心_大商创-免费B2B2C商城系统，免费多商户商城系统，多店铺商城系统，企业级电商系统免费下载_模板堂出</title>
-
-
+<title>YSQ百货 - 登录</title>
 
 <link rel="shortcut icon" href="favicon.ico" />
 <link rel="stylesheet" type="text/css" href="__index__/css/base.css" />
 <link rel="stylesheet" type="text/css" href="__index__/css/style.css" />
 <link rel="stylesheet" type="text/css" href="__index__/css/iconfont.css" />
 <link rel="stylesheet" type="text/css" href="__index__/css/purebox.css" />
-<link rel="stylesheet" type="text/css" href="__index__/css/quickLinks.css" />
+<link rel="stylesheet" type="text/css"
+	href="__index__/css/quickLinks.css" />
+
+<!-- 滑块验证 -->
+<link href="__SliderCaptcha__/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<link href="__SliderCaptcha__/disk/slidercaptcha.css" rel="stylesheet" />
+<link href="__root__/css/SliderCaptcha.css" rel="stylesheet" />
 
 <script type="text/javascript" src="__index__/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="__index__/js/jquery.json.js"></script>
@@ -97,20 +96,18 @@
 			<div class="w w1200">
 				<div class="logo">
 					<div class="logoImg">
-						<a href="./index.php" class="logo"><img
-							src="__index__/img/user_login_logo.png" /></a>
-					</div>
-					<div class="logo-span">
-						<b
-							style="background: url(__index__/img/login_logo_pic.png) no-repeat;"></b>
+						<a href="https://blog.csdn.net/qq_43290318"><img
+							src="__root__/logo1.png" style="height: 90%;" /></a> <a
+							href="https://blog.csdn.net/qq_43290318"><img
+							src="__root__/ecsc-join.gif" /></a>
 					</div>
 				</div>
 				<div class="header-href">
-					<span>还没有账号<a href="user.php?act=register" class="jump">免费注册</a></span>
+					<span>还没有账号<a href="{:url('member/register')}" class="jump">免费注册</a></span>
 				</div>
 			</div>
 		</div>
-		<div class="container">
+		<div class="container" >
 			<div class="login-wrap">
 				<div class="w w1200">
 					<div class="login-form">
@@ -131,8 +128,10 @@
 							<div class="msg-wrap">
 								<div class="msg-error"></div>
 							</div>
+							
 							<div class="form">
-								<form name="formLogin" action="{:url('member/login')}" method="post">
+								<form id="loginForm" name="formLogin" action="{:url('member/login')}"
+									method="post">
 									<div class="item">
 										<div class="item-info">
 											<i class="iconfont icon-name"></i> <input type="text"
@@ -143,41 +142,49 @@
 									</div>
 									<div class="item">
 										<div class="item-info">
-											<i class="iconfont icon-password"></i> <input type="password"
-												style="display: none" /> <input type="password"
+											<i class="iconfont icon-password"></i><input type="password"
 												id="nloginpwd" name="password" class="text" value=""
 												placeholder="密码" autocomplete="off" />
-												
+
 										</div>
 										<div class="msg"></div>
 									</div>
 									<div class="item">
 										<div class="item-info">
-											<i class="iconfont icon-password"></i><input type="text" name="captcha" id="captcha" class="text"
-												value="" autocomplete="off" placeholder="验证码"/> <img
-												style="position: absolute; top: 0px; right: 0px;" id="captchaImg"
-												src="{:captcha_src()}" onClick="this.src='{:captcha_src()}'" />
+											<i class="iconfont icon-password"></i><input type="text"
+												name="captcha" id="captcha" class="text" value=""
+												autocomplete="off" placeholder="验证码" /> <img
+												style="position: absolute; top: 0px; right: 0px;"
+												id="captchaImg" src="{:captcha_src()}"
+												onClick="this.src='{:captcha_src()}'" />
 										</div>
 										<div class="msg"></div>
 									</div>
 
 									<div class="item item-button">
-										<input type="hidden" name="dsc_token"
-											value="d181014a3312a8a86c67ccff723ac5fd" autocomplete="off" />
 										<input type="hidden" name="act" value="act_login"
 											autocomplete="off" /> <input type="hidden" name="back_act"
 											value=".%2Findex.php" autocomplete="off" /> <input
-											type="submit" name="submit" id="loginSubmit"
+											type="submit" id="loginSubmit"
 											value="登&nbsp;&nbsp;录" class="btn sc-redBg-btn">
 									</div>
 									<a href="#" class="notpwd gary">忘记密码？</a>
 								</form>
+								<!-- 滑块验证码 start -->
+								<div class="slidercaptcha card" style="top:160px;left:50%;margin-left:-157px;">
+									<div class="card-header">
+										<span>请完成安全验证!</span>
+									</div>
+									<div class="card-body">
+										<div id="captcha1"></div>
+									</div>
+								</div>
+								<!-- 滑块验证码 end -->
 							</div>
 						</div>
 					</div>
 				</div>
-				<a class="login-banner" href="https://www.dscmall.cn/"
-					target="_blank"
+				<a class="login-banner" href="javascript:void(0);"
 					style="background: url(__index__/img/1488936109167439630.jpg) center center no-repeat;"></a>
 
 			</div>
@@ -200,32 +207,27 @@
 				</p>
 
 				<p class="footer-otherlink">
-					<a href="http://www.ecmoban.com" target="_blank" title="模板堂">模板堂</a>
-
-					| <a href="http://www.ecjia.com" target="_blank" title="ECJia">ECJia</a>
-
-					| <a href="http://www.ectouch.cn" target="_blank" title="ECTouch">ECTouch</a>
-
-					| <a href="http://help.ecmoban.com" target="_blank" title="电商学院">电商学院</a>
+					<a href="#" target="_blank" title="模板堂">模板堂</a> | <a href="#"
+						target="_blank" title="ECJia">ECJia</a> | <a href="#"
+						target="_blank" title="ECTouch">ECTouch</a> | <a href="#"
+						target="_blank" title="电商学院">电商学院</a>
 
 				</p>
-
 				<p class="copyright_info">
-					ICP备案证书号:<a href="http://www.miibeian.gov.cn/" target="_blank">DSC00000123</a>
-					POWERED BY<a href="http://www.dscmall.cn/" target="_blank">大商创</a>2.0
+					<span>Copyright © 2020 <a
+						href="https://blog.csdn.net/qq_43290318">passerbyYSQ</a>. All
+						Rights Reserved | <a href="http://www.beian.miit.gov.cn/">粤ICP备20036780号</a></span>
+					<br> <span>Powered by <a
+						href="https://blog.csdn.net/qq_43290318">passerbyYSQ</a>
+						1127664027@qq.com
+					</span>
 				</p>
 			</div>
 		</div>
 
-
-		<div class="hidden">
-			<input type="hidden" name="seller_kf_IM" value="" rev="" ru_id="" />
-			<input type="hidden" name="seller_kf_qq" value="349488953" /> <input
-				type="hidden" name="seller_kf_tel" value="4000-000-000" /> <input
-				type="hidden" name="user_id" value="0" />
-		</div>
 	</div>
-	
+	<script src="__SliderCaptcha__/lib/jquery/jquery.min.js"></script>
+
 	<script type="text/javascript" src="__index__/js/utils.js"></script>
 	<script type="text/javascript"
 		src="__index__/js/jquery.SuperSlide.2.1.1.js"></script>
@@ -234,82 +236,115 @@
 	<script type="text/javascript"
 		src="__index__/js/jquery.validation.min.js"></script>
 	<script type="text/javascript" src="__index__/js/jquery.purebox.js"></script>
-	<script type="text/javascript">
 
-	
+	<script
+		src="__SliderCaptcha__/lib/twitter-bootstrap/js/bootstrap.bundle.js"></script>
+	<script src="__SliderCaptcha__/disk/longbow.slidercaptcha.js"></script>
+
+	<script type="text/javascript">
+		
+
 		$(function() {
 			
-			$("form[name='formLogin']").validate({
-				// 验证通过后的回调
-				submitHandler:function(form){
-		            form.submit();
-		        },
-				// 修改错误信息的显示位置
-				
-				errorPlacement:function(error, element){ // 错误信息，input表单项
-					var error_div = element.parents('div.item').find('div.msg');
-					error_div.html("").append(error);
-				},
-				
-				ignore:".ignore",
-				rules:{
-					username :{
-						required : true,
-						isMobile : true  // 自定义的验证规则
-					},
-					password :{
-						required : true
-					},
-					captcha:{
-						required : true,
-						remote : {
-							cache: false,
-							async: true,
-							type: 'POST',
-							url: "{:url('member/checkCaptcha')}",
-							data:{ // 提交给服务端的数据（键值对）
-								captcha:function(){
-									return $("input[name='captcha']").val();
-								}
+			function login(form) {
+				$(".slidercaptcha").css({
+					display : "block"
+				});
+				var $captcha = $('#captcha1').sliderCaptcha(
+						{
+							repeatIcon : 'fa fa-redo',
+							setSrc : function() {
+								return 'http://imgs.sdgxgz.com/images/Pic'
+										+ Math.round(Math.random() * 136) + '.jpg';
 							},
-							// 远程地址只能输出"true"或"false"，不能有其它输出。
-							dataFilter:function(data, type){ 
-								if(data == "false"){
-									// 制造点击事件，使验证码刷新。
-									$("input[name='captcha']").siblings().click();
+							onSuccess : function() { //成功事件
+								console.log('bug');
+								console.log($(form));
+								//$("#loginForm").submit();
+								
+								// 无法提交
+								$(form).submit();
+								//document:loginForm.submit();
+							}
+						});
+			}
+			
+			$("form[name='formLogin']").validate(
+					{
+						// 验证通过后的回调
+						submitHandler : function(form) {
+							form.submit();
+							//login(form);
+						},
+						// 修改错误信息的显示位置
+
+						errorPlacement : function(error, element) { // 错误信息，input表单项
+							var error_div = element.parents('div.item').find(
+									'div.msg');
+							error_div.html("").append(error);
+						},
+
+						ignore : ".ignore",
+						rules : {
+							username : {
+								required : true,
+								isMobile : true
+							// 自定义的验证规则
+							},
+							password : {
+								required : true
+							},
+							captcha : {
+								required : true,
+								remote : {
+									cache : false,
+									async : true,
+									type : 'POST',
+									url : "{:url('member/checkCaptcha')}",
+									data : { // 提交给服务端的数据（键值对）
+										captcha : function() {
+											return $("input[name='captcha']")
+													.val();
+										}
+									},
+									// 远程地址只能输出"true"或"false"，不能有其它输出。
+									dataFilter : function(data, type) {
+										if (data == "false") {
+											// 制造点击事件，使验证码刷新。
+											$("input[name='captcha']")
+													.siblings().click();
+										}
+										return data;
+									}
 								}
-								return data;
-							}							
+							}
+						},
+						messages : {
+							username : {
+								required : "手机号不能为空",
+								isMobile : "手机号格式错误"
+							},
+							password : {
+								required : "密码不能为空"
+							},
+							captcha : {
+								required : "验证码不能为空",
+								remote : "验证码错误，已刷新"
+							}
+						},
+						onkeyup : function(element, event) {
+							var name = $(element).attr("name");
+							if (name == "captcha") {
+								//不可去除，当是验证码输入必须失去焦点才可以验证（错误刷新验证码）
+								return true;
+							}
 						}
-					}
-				},
-				messages:{
-					username:{
-						required : "手机号不能为空",
-						isMobile : "手机号格式错误"
-					},
-					password:{
-						required : "密码不能为空"
-					},
-					captcha: {
-						required : "验证码不能为空",
-						remote : "验证码错误，已刷新"
-					}
-				},
-				onkeyup: function(element, event){
-					var name = $(element).attr("name");
-					if(name == "captcha"){
-						//不可去除，当是验证码输入必须失去焦点才可以验证（错误刷新验证码）
-						return true;
-					}
-				}
-			});
+					});
 		});
-		
 	</script>
-	
-		
-	
+
+
+
 </body>
 </html>
 

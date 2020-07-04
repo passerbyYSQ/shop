@@ -126,6 +126,18 @@ class Cart extends Controller {
         $goodsId = input('post.goodsId');
         $count = input('post.count');
         
+        $goods = GoodsModel::get($goodsId);
+        if (empty($goods)) {
+            $res['status'] = false;
+            $res['msg'] = '商品不存在';
+            return json($res);
+        }
+        if ($goods->onSale == 0) {
+            $res['status'] = false;
+            $res['msg'] = '商品已被下架';
+            return json($res);
+        }
+        
         $model = new CartModel();
         $res['status'] = true;
         $item = $model->findOne($memberId, $goodsId);

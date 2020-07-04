@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>交流群：383432579</title>
+<title>YSQ百货 - 商品列表</title>
 <link rel="shortcut icon" href="favicon.ico" />
 <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
 <link rel="stylesheet" type="text/css" href="__index__/css/base.css" />
@@ -115,6 +115,7 @@
 									<input type="hidden" name="cate[]" value="{$cateId}"/>
 									{/foreach}
 									
+									<input type="hidden" name="goodsName" value="{$conds.goodsName}" /> 
 									<input type="hidden" name="minPrice" value="{$conds.minPrice}" id="minPrice" /> 
 									<input type="hidden" name="maxPrice" value="{$conds.maxPrice}" id="maxPrice" /> 
 									<input type="hidden" name="sort" value="{$field . ' ' . $conds.sort[1]}" id="sort"/>
@@ -124,7 +125,7 @@
 					</div>
 				</div>
 				<div class="g-view w">
-					<div>{$pageHtml}</div>
+					{$pageHtml}
 					<div class="goods-list" ectype="gMain" style="width: 100%;">
 						<div class="gl-warp gl-warp-large">
 							<ul>
@@ -142,6 +143,11 @@
 											</div>
 											<div class="p-num">
 												已售<em>{$goods.saleCount}</em>件
+											</div>
+										</div>
+										<div class="p-lie" style="margin:0px;">
+											<div class="p-num">
+												上架：{$goods.onSaleTime}
 											</div>
 										</div>
 										<div class="p-name">
@@ -170,7 +176,7 @@
 						</div>
 						
 					</div>
-
+					{$pageHtml}
 				</div>
 
 				{include file="common/cart" /}
@@ -185,7 +191,7 @@
 						</div>
 					</div>
 				</div>
-
+			</div>
 				{include file="common/footer" /}
 
 				<!-- 

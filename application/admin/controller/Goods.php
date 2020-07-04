@@ -128,7 +128,7 @@ class Goods extends Controller {
 
             // 参数判断
             $res = $this->validate(input('post.'), [
-                'goodsName' => ['length:2,32'],
+                'goodsName' => ['length:2,64'],
                 'count' => ['regex' => '/^[1-9]\d*$/']
             ], [
                 'goodsName.length' => '商品长度必须在[2, 32]之间',
@@ -158,6 +158,9 @@ class Goods extends Controller {
             // 有就复写掉，没有就新增
             $goods['onSale'] = input('post.onSale') !== null ? 1 : 0;
             $goods['mainPic'] = $upload['save_path'];
+            if ($goods['onSale']) {
+                $goods['onSaleTime'] = date('Y-m-d H:i:s');
+            }
             
             $res = $goodsModel->add($goods);
             if (!empty($res)) {

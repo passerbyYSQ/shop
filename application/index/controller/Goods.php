@@ -7,6 +7,17 @@ use app\index\model\Cart;
 
 class Goods extends Controller
 {
+    public function test() {
+        
+//         $arr = [1, 2, 3];
+        
+//         $res = implode('&cate[]=', $arr);
+//         $arr1['cate[]'] = $res;
+//         var_dump($arr1);
+        
+        var_dump($_GET);
+    }
+    
     public function index() {
         $goodsId = input('get.id');
         $goodsModel = new GoodsModel();
@@ -24,16 +35,26 @@ class Goods extends Controller
         // 获取所有分类
         $cateModel = new CategoryModel();        
         $cates = $cateModel->getAll();
-
+        
         $conds = array();
-        // 接收checkbox（勾选的多个分类）
-        $conds['cates']  = input('cate/a', array()); // 勾选中的分类的id的数组
+       
+        $conds['goodsName'] = input('goodsName', '');
+        
+        $conds['cates'] = array();
+        if (request()->isPost()) {
+            $conds['cates']  = input('cate/a', array()); // 勾选中的分类的id的数组
+        } else if (request()->isGet()){
+            //var_dump(input());exit();
+            if (!empty(input('cate'))) {
+                $conds['cates'] = explode(',', input('cate')); 
+            }
+        }
         $conds['minPrice'] = input('minPrice', ''); // 最低价
         $conds['maxPrice'] = input('maxPrice', ''); // 最高价
         $conds['sort'] = input('sort', 'onSaleTime desc');   // 排序方式
         
         $goodsModel = new GoodsModel();
-        $res = $goodsModel->listPage($conds);
+        $res = $goodsModel->listPage($conds, 1);
         
         $this->assign('cates', $cates);
         $this->assign('goodsList', $res['items']);
