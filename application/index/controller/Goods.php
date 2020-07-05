@@ -54,7 +54,7 @@ class Goods extends Controller
         $conds['sort'] = input('sort', 'onSaleTime desc');   // 排序方式
         
         $goodsModel = new GoodsModel();
-        $res = $goodsModel->listPage($conds, 1);
+        $res = $goodsModel->listPage($conds, 5);
         
         $this->assign('cates', $cates);
         $this->assign('goodsList', $res['items']);

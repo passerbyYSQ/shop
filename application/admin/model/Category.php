@@ -14,7 +14,7 @@ class Category extends Model {
         return db('category')->select();
     }
     
-    public function list($conds, $count = 1, $parms) { // 每页显示的条数  
+    public function list($conds, $parms, $count = 1) { // 每页显示的条数  
         //var_dump($parms);exit();
         return db('category')
                     ->where($conds)

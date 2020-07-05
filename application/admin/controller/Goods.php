@@ -9,7 +9,7 @@ use app\admin\model\Goods as GoodsModel;
  * @author passerbyYSQ
  * @create 2020年5月28日 下午11:56:58
  */
-class Goods extends Controller {
+class Goods extends BaseController {
     
     public function list() {
         $keyword = input('get.keyword');
@@ -21,7 +21,7 @@ class Goods extends Controller {
         
         $goodsModel = new GoodsModel();
         // 当前页的数据
-        $goodsList = $goodsModel->list($conds, 1, request()->param());
+        $goodsList = $goodsModel->list($conds, request()->param(), 5);
         // 按钮栏的Html代码
         $btnHtml = $goodsList->render();
         //var_dump($cates->render());exit();
@@ -36,6 +36,10 @@ class Goods extends Controller {
     }
     
     public function delete() {
+        if (session('admin.permission') != 0) {
+            $this->error('您无权限操作');
+        }
+        
         $cateId = input('get.id');
         $goodsModel = new GoodsModel();
         $count = $goodsModel->deleteById($cateId);
@@ -52,7 +56,7 @@ class Goods extends Controller {
         if (request()->isPost()) {
             // 参数判断
             $res = $this->validate(input('post.'), [
-                'goodsName' => ['length:2,32'],
+                'goodsName' => ['length:2,64'],
                 'count' => ['regex' => '/^[1-9]\d*$/']
             ], [
                 'goodsName.length' => '商品长度必须在[2, 32]之间',
@@ -76,8 +80,9 @@ class Goods extends Controller {
             $goods = input('post.');
             // 有就复写掉，没有就新增
             $goods['onSale'] = input('post.onSale') !== null ? 1 : 0;
+            $goods['onSaleTime'] = date('Y-m-d H:i:s');
             // 移动上传的主图
-            if (!isset($_FILES['mainPic'])) {
+            if (isset($_FILES['mainPic'])) {
                 $save_path = 'upload/'. date('Y/m/d'); // 当前目录在index.php所在目录下
                 $upload = upload($save_path, '2M', 'mainPic');
                 if (!$upload['result']) {

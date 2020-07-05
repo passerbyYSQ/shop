@@ -84,7 +84,7 @@ class Member extends Controller {
         }
         
         session('member', null);
-        $this->success('退出成功');
+        $this->success('退出成功', 'goods/list');
     }
     
     public function test() {

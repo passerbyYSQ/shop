@@ -6,6 +6,7 @@ use app\index\model\Cart as CartModel;
 use app\index\model\Order as OrderModel;
 use app\index\model\OrderItem as OrderItemModel;
 use app\index\model\Address as AddressModel;
+use app\index\model\Goods as GoodsModel;;
 use think\Exception;
 
 /**
@@ -73,9 +74,42 @@ class Order extends Controller {
             $this->error('订单号错误或无权限操作');
         }
         
-        $order->status = 1;
-        $order->save();
-        $this->success('支付成功');
+        $items = OrderItemModel::where('orderId', $order->id)->select();
+        Db::startTrans();
+        try{   
+            
+            foreach ($items as $item) {
+                $goods = GoodsModel::get($item->goodsId);
+                
+                // 库存是否充足
+                if ($item->count > $goods->count) {
+                    // 回滚事务
+                    Db::rollback();
+                    $this->error("下单失败，{$goods->goodsName} 商品库存不足");
+                    return;
+                }
+                
+                // 库存减少
+                $goods->count -= $item->count;
+                // 出售数量增加
+                $goods->saleCount += $item->count;
+                
+                $goods->save();
+            }
+            
+            // 修改订单状态
+            $order->status = 1;
+            $order->save();
+            
+            // 提交事务
+            Db::commit();
+            
+            $this->success('支付成功');
+        } catch (Exception $e) {
+            // 回滚事务
+            Db::rollback();
+            $this->error('支付失败');
+        }
     }
     
     public function myorder() {
@@ -144,9 +178,6 @@ class Order extends Controller {
             $payMethod = 0;
         }
         
-        //$cartModel = new CartModel();
-        
-        $flag = true;
         $orderId = $this->produceOrderId();
         $totalPay = 0;
         //var_dump('111');
@@ -160,8 +191,11 @@ class Order extends Controller {
                 $cartItem = $cartModel->findOneNeedPrice($cartId, session('member.id'));
                 //var_dump($cartItem);
                 if (empty($cartItem)) {
-                    $flag = false;
-                    break;
+                    //$flag = false;
+                    // 回滚事务
+                    Db::rollback();
+                    $this->error('购物车无该商品，请勿重复下单！');
+                    return;
                 }
                 
                 $orderItem = new OrderItemModel();
@@ -181,28 +215,23 @@ class Order extends Controller {
                 
             }
             
-            if ($flag) {
-                // 插入订单
-                $order = new OrderModel();
-                $order->id = $orderId;
-                $order->createTime = date('Y-m-d H:i:s');
-                $order->postscript = input('post.postscript');
-                $order->totalPay = $totalPay;
-                $order->payMethod = $payMethod;
-                $order->addressId = $address->id;
-                $order->status = 0; // 未付款
-                $order->memberId = session('member.id'); // 未付款
-                $order->save();
-                
-                // 提交事务
-                Db::commit();
-                
-                $this->success('下单成功，请前往付款', 'cart/myorder');
-            } else {
-                // 回滚事务
-                Db::rollback();
-                $this->error('购物车无该商品，请勿重复下单！');
-            }
+            // 插入订单
+            $order = new OrderModel();
+            $order->id = $orderId;
+            $order->createTime = date('Y-m-d H:i:s');
+            $order->postscript = input('post.postscript');
+            $order->totalPay = $totalPay;
+            $order->payMethod = $payMethod;
+            $order->addressId = $address->id;
+            $order->status = 0; // 未付款
+            $order->memberId = session('member.id'); // 未付款
+            $order->save();
+            
+            // 提交事务
+            Db::commit();
+            
+            $this->success('下单成功，请前往付款', 'order/myorder');
+            
         } catch (Exception $e) {
             // 回滚事务
             Db::rollback();

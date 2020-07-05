@@ -11,6 +11,10 @@ class Login extends Controller {
     
     // 显示登录界面
     public function index() {
+        if (!empty(session('admin'))) {
+            $this->error('请勿重复登录', 'index/index');
+        }
+        
         return view();
     }
     
@@ -21,7 +25,7 @@ class Login extends Controller {
         
         $res = $this->validate(input('post.'), [
             'phone' => ['require'/*, 'regex' => '/^13[\d]{9}$|^14[5,7]{1}\d{8}$|^15[^4]{1}\d{8}$|^17[0,6,7,8]{1}\d{8}$|^18[\d]{9}$/'*/],
-            'password' => ['require', 'leghth:3,32']
+            'password' => ['require', 'length:3,32']
         ], [
             'phone.require' => '手机号不能为空',
             'phone.regex' => '手机号格式不正确',
@@ -42,13 +46,14 @@ class Login extends Controller {
         $admin = $model->login($phone, $password);
         if (!empty($admin)) {
             // 成功
-            return $this->fetch('index');
+            session('admin', $admin);
+            
+            return $this->success('登录成功', 'index/index');
         } else {
             return $this->fetch('index', [
                 'failMsg' => '账号或密码错误'
             ]);
         }
-        
     }
 }
 ?>

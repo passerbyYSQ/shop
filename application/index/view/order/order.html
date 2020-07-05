@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>订单</title>
+<title>确认订单</title>
 <link rel="shortcut icon" href="favicon.ico" />
 <link rel="stylesheet" type="text/css" href="__index__/css/base.css" />
 <link rel="stylesheet" type="text/css" href="__index__/css/style.css" />
@@ -41,7 +41,7 @@
 						href="{:url('member/register')}" class="link-regist">免费注册</a>
 					{else/} <a href="#" class="link-login red">
 						{$Think.session.member.phone} | {$Think.session.member.memberName}
-					</a> <a href="#" class="link-regist"
+					</a> <a href="{:url('member/logout')}" class="link-regist"
 						onClick="return confirm('是否确认退出当前账号？');">退出</a> {/empty}
 				</div>
 			</div>

@@ -7,7 +7,7 @@ use app\admin\model\Category as CategoryModel;
  * @author passerbyYSQ
  * @create 2020年5月26日 下午9:52:16
  */
-class Category extends Controller {
+class Category extends BaseController {
     
     public function add() {
         // 助手函数
@@ -49,7 +49,7 @@ class Category extends Controller {
         
         $model = new CategoryModel();
         // 当前页的数据
-        $cates = $model->list($conds, 1, request()->param());
+        $cates = $model->list($conds, request()->param(), 5);
         // 按钮栏的Html代码
         $btnHtml = $cates->render();
         //var_dump($cates->render());exit();
@@ -64,6 +64,11 @@ class Category extends Controller {
     }
     
     public function delete() {
+        
+        if (session('admin.permission') != 0) {
+            $this->error('您无权限操作');
+        }
+        
         $cateId = input('get.id');
         $model = new CategoryModel();
         $count = $model->deleteById($cateId);

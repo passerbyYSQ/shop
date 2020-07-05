@@ -59,7 +59,6 @@ class Goods extends Model {
         
         return $data;
     }
-    
 }
 
 ?>

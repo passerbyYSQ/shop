@@ -8,7 +8,7 @@ use app\admin\model\OrderItem;
  * @create 2020年7月3日 下午3:03:09
  */
 
-class Order extends Controller {
+class Order extends BaseController {
     
     // 发货
     public function send() {

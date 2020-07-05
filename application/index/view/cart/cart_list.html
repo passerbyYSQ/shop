@@ -34,7 +34,7 @@ var load_icon = '<img src="__index__/img/load.gif" width="200" height="200">';
 						href="{:url('member/register')}" class="link-regist">免费注册</a>
 					{else/} <a href="#" class="link-login red">
 						{$Think.session.member.phone} | {$Think.session.member.memberName}
-					</a> <a href="#" class="link-regist"
+					</a> <a href="{:url('member/logout')}" class="link-regist"
 						onClick="return confirm('是否确认退出当前账号？');">退出</a> {/empty}
 				</div>
 			</div>
