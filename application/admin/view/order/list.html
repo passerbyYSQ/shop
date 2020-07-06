@@ -397,9 +397,9 @@ Purchase: http://wrapbootstrap.com
 									{switch name="$order[0]['payMethod']"}
 									{case value="0"}支付宝支付{/case}
 									{case value="1"}微信支付{/case}
-									{default /}网上银行{/case}
+									{default /}网上银行：<br>￥{$order[0]['totalPay']}
 									{/switch}
-									：￥{$order[0]['totalPay']}</td>
+								</td>
 								<td>
 									{switch name="$order[0]['status']"}
 									{case value="0"}未付款{/case}
@@ -413,16 +413,21 @@ Purchase: http://wrapbootstrap.com
 								<td>{$order[0]['province']} {$order[0]['city']} {$order[0]['area']}<br>{$order[0]['detail']}</td>
 								<td>
 									<div class="input-group input-group-sm">
-										<input type="text" class="form-control" placeholder="快递单号" id="deliveryId"
-										{notempty name="$order[0]['deliveryId']"}value="{$order[0]['deliveryId']}" disabled{/notempty} > 
-										{empty name="$order[0]['deliveryId']"}
-										<span class="input-group-btn">
-											<a class="btn btn-default" 
-											onClick="return sendBefore(this);"
-											href="{:url('order/send')}?orderId={$order[0]['id']}">
-											发货</a>
-										</span>
-										{/empty}
+										{switch name="$order[0]['status']"}
+										{case value="1"}
+											<input type="text" class="form-control" placeholder="快递单号" id="deliveryId_{$order[0]['id']}">
+											<span class="input-group-btn">
+                                                 <a onClick="sendBefore(this, 'deliveryId_{$order[0]['id']}')" 
+                                                 href="{:url('order/send')}?orderId={$order[0]['id']}" class="btn btn-default" >发货</a>
+                                             </span>
+										{/case}
+										{case value="0"}
+											<input type="text" class="form-control" value="买家未付款" disabled>
+										{/case}
+										{default/}
+											<input type="text" class="form-control" value="{$order[0]['deliveryId']}" disabled>
+										{/switch}
+										
 									</div>
 								</td>
 							</tr>
@@ -517,8 +522,9 @@ Purchase: http://wrapbootstrap.com
 			
 		});
 		
-		function sendBefore(obj) {
-			var deliveryId = $("#deliveryId").val();
+		function sendBefore(obj, id) {
+			var deliveryId = $("#" + id).val();
+			console.log(deliveryId);
 			if (confirm('请确认快递单号：' + deliveryId + '，是否确认发货？')) {
 				var newHref = $(obj).attr('href') + '&deliveryId=' + deliveryId;
 				$(obj).attr('href', newHref);

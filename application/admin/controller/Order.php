@@ -23,6 +23,10 @@ class Order extends BaseController {
             $this->error('订单号错误');
         }
         
+        if ($order->status != 1) {
+            $this->error('只有已付款，未发货的订单才可录入快递单号');
+        }
+        
         $order->deliveryId = $deliveryId;
         $order->status = 2;
         if ($order->save()) {

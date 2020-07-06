@@ -171,7 +171,7 @@ class Order extends Controller {
         $address = AddressModel::get(
             ['id'=>$addressId, 'memberId'=>session('member.id')]);
         if (empty($address)) {
-            $this->error('收货地址不存在', 'order/index');
+            $this->error('收货地址不存在', 'cart/index');
         }
         
         if ($payMethod != 0 || $payMethod != 1 || $payMethod != 2) {
@@ -242,7 +242,7 @@ class Order extends Controller {
     
     // 生成订单号
     public function produceOrderId() {
-        $orderId = date('YmdHis') . sprintf("%04d", random_int(0, 999999));
+        $orderId = date('YmdHis') . sprintf("%06d", random_int(0, 999999));
         return $orderId;
     }
     
@@ -258,8 +258,10 @@ class Order extends Controller {
         $cartModel = new CartModel();
         $items = $cartModel->selectByIds($cartIds);
         
+        
         $this->assign('allAddress', $this->allAddress());
         $this->assign('items', $items);
+        $this->assign('itemCount', count($items));
         return $this->fetch('order');
     }
     

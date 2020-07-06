@@ -82,7 +82,7 @@ class Goods extends BaseController {
             $goods['onSale'] = input('post.onSale') !== null ? 1 : 0;
             $goods['onSaleTime'] = date('Y-m-d H:i:s');
             // 移动上传的主图
-            if (isset($_FILES['mainPic'])) {
+            if (!isset($_FILES['mainPic'])) {
                 $save_path = 'upload/'. date('Y/m/d'); // 当前目录在index.php所在目录下
                 $upload = upload($save_path, '2M', 'mainPic');
                 if (!$upload['result']) {
